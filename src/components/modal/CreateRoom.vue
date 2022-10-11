@@ -76,24 +76,24 @@ export default {
   methods: {
     async onSubmit() {
       console.log("onSubmit call", this.name, this.file)
-      //
-      // let thumbnailUrl = ""
-      // if(this.file) {
-      //   const filePath = `/room/${this.file.name}`
-      //   console.log(filePath)
-      //   await firebase.storage().ref()
-      //     .child(filePath)
-      //     .put(this.file)
-      //     .then(async snapshot => {
-      //       thumbnailUrl = await snapshot.ref.getDownloadURL()
-      //       console.log("thumbnailUrl", thumbnailUrl)
-      //     })
-      // }
+
+      let thumbnailUrl = ""
+      if(this.file) {
+        const filePath = `/room/${this.file.name}`
+        console.log(filePath)
+        await firebase.storage().ref()
+          .child(filePath)
+          .put(this.file)
+          .then(async snapshot => {
+            thumbnailUrl = await snapshot.ref.getDownloadURL()
+            console.log("thumbnailUrl", thumbnailUrl)
+          })
+      }
 
       const roomRef = firebase.firestore().collection('rooms')
       await roomRef.add({
         name: this.name,
-        // thumbnailUrl: thumbnailUrl,
+        thumbnailUrl: thumbnailUrl,
         createdAt: firebase.firestore.Timestamp.now()
       })
       .then(result => {
