@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 
 var firebaseConfig = {
-  apiKey: "AIzaSyCtn66gfjgix_vbq8EglWQ7Y4NmIusmEjY",
-  authDomain: "b-2220.firebaseapp.com",
-  projectId: "b-2220",
-  storageBucket: "b-2220.appspot.com",
-  messagingSenderId: "584929030989",
-  appId: "1:584929030989:web:7efff480815be77f6d7d04"
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  projectId:  process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+  appId:  process.env.VUE_APP_APP_ID,
 };
 
 
