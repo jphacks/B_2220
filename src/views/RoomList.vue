@@ -21,7 +21,7 @@
               required
             ></v-text-field>
         </div>
-        
+ 
         <div class="d-block pa-2">
           <p>{{ name }}</p>
           <p>2.あなたの名前を入力してください</p>
@@ -101,7 +101,7 @@ export default {
     latitude: 0,
     longitude: 0,
     mapRequestUrl: "https://maps.google.co.jp/maps?output=embed&q=" + 0 + "," + 0 + "&t=m&z=20",
-    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3'))
+    ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3'))
   }),
   mounted() {
 
@@ -161,13 +161,7 @@ export default {
       })
       console.log(this.rooms)
     },
-    onCall:function() {
-      setTimeout(this.ringTone, 3000)
-    },
-    ringTone:function() {
-      this.ringtone.currentTime = 0 // 連続で鳴らせるように
-      this.ringtone.play()
-    },
+
     getLocation: function() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
