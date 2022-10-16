@@ -71,7 +71,7 @@
                 :loading="loading"
                 :disabled="loading"
                 color="secondary"
-                @click="onCall"
+                @click="saveData"
               >
                 発信する
               </v-btn>
@@ -101,8 +101,7 @@ export default {
     latitude: 0,
     longitude: 0,
     mapRequestUrl: "https://maps.google.co.jp/maps?output=embed&q=" + 0 + "," + 0 + "&t=m&z=20",
-    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3')),
-
+    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3'))
   }),
   mounted() {
 
@@ -123,6 +122,7 @@ export default {
     } else {
         console.error("Geolocation APIに対応していません");
     }
+
   },
   watch: {
     latitude: {
@@ -160,9 +160,6 @@ export default {
         this.rooms.push(data)
       })
       console.log(this.rooms)
-
-
-
     },
     onCall:function() {
       setTimeout(this.ringTone, 3000)
@@ -187,6 +184,10 @@ export default {
       } else {
           console.error("Geolocation APIに対応していません");
       }
+    },
+    saveData: function() {
+      sessionStorage.setItem('name', this.name); // 👈 sessionStorageへ保存
+      sessionStorage.setItem('phoneNumber', this.phoneNumber); // 👈 sessionStorageへ保存
     }
   }
 }
