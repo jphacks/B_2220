@@ -1,113 +1,94 @@
 <template>
   <v-app id="inspire">
     <sidebar/>
-    <v-app-bar
+    <!-- <v-app-bar
         app
         shrink-on-scroll
     >
-      <v-toolbar-title>ルーム一覧</v-toolbar-title>
-      <CreateRoom />
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-    </v-app-bar>
+      <CreateRoom /> 
+    </v-app-bar> -->
 
     <v-main>
       
-      <template>
+     
   <v-form v-model="valid">
     <v-container>
-      <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-        <p>{{ phoneNumber }}</p>
-        <p>1.発信する電話番号を入力してください</p>
-          <v-text-field
-            v-model="phoneNumber"
-            label="電話番号を入力してください"
-            required
-          ></v-text-field>
-        </v-col>
-
-        <v-col
-          cols="12"
-          md="4"
-        >
-        <p>{{ name }}</p>
-        <p>2.あなたの名前を入力してください</p>
-          <v-text-field
-            v-model="name"
-            label="名前を入力してください"
-            required
-          ></v-text-field>
-        </v-col>
-        
-        <v-col
-          cols="12"
-          md="4"
-        >
-
-        <p>3.位置情報の取得を許可してください</p>
+      <v-row class="display:flex">
         <div>
+        <div class="d-block pa-2">
+          <p>{{ phoneNumber }}</p>
+          <p>1.発信する電話番号を入力してください</p>
+            <v-text-field
+              v-model='phoneNumber'
+              label='電話番号を入力してください'
+              required
+            ></v-text-field>
         </div>
-        <template>
-        <div class="text-center">
-          <v-btn
-            class="ma-2"
-            :loading="loading"
-            :disabled="loading"
-            color="secondary"
-            @click="getLocation"
-          >
-            Accept Terms
-          </v-btn>
-          <p>{{ latitude }}</p>
-          <p>{{ longitude }}</p>
+        
+        <div class="d-block pa-2">
+          <p>{{ name }}</p>
+          <p>2.あなたの名前を入力してください</p>
+            <v-text-field
+              v-model='name'
+              label='名前を入力してください'
+              required
+            ></v-text-field>
+        </div>
+        
+        <div class="d-block pa-2">
+          <p>3.位置情報の取得を許可してください</p>
+          <template>
+            <div>
+              <v-btn
+                class="ma-2"
+                :loading="loading"
+                :disabled="loading"
+                color="secondary"
+                @click="getLocation"
+              >
+                位置情報を取得する
+              </v-btn>
+              <p>{{ latitude }}</p>
+              <p>{{ longitude }}</p>
 
-          </div>
-        </template>
+            </div>
+          </template>
+        </div>
 
-        <p>4.あなたの名前を入力してください</p>
-        <template>
-          <div class="text-center">
-            <v-btn
-              class="ma-2"
-              :loading="loading"
-              :disabled="loading"
-              color="secondary"
-              @click="onCall"
-            >
-              Accept Terms
-            </v-btn>
+        <div class="d-block pa-2">
+          <p>4.フェイク通話を開始するボタンを押してください</p>
+            <div class="text-center">
+              <v-btn
+                class="ma-2"
+                :loading="loading"
+                :disabled="loading"
+                color="secondary"
+                @click="onCall"
+              >
+                発信する
+              </v-btn>
+            </div>
+        </div>
 
-          </div>
-        </template>
-
-          
-        </v-col>
+        </div>
+        
       </v-row>
     </v-container>
   </v-form>
-</template>
-    </v-main>
+  </v-main>
   </v-app>
 </template>
 
 <script>
-import Sidebar from '@/components/layouts/Sidebar'
-import CreateRoom from '@/components/modal/CreateRoom'
+// import Sidebar from '@/components/layouts/Sidebar'
+// import CreateRoom from '@/components/modal/CreateRoom'
 import firebase from "@/firebase/firebase"
 
 export default {
-  components: {
+  /* components: {
     Sidebar,
     CreateRoom
-  },
+  },*/
   data: () => ({
     rooms: [],
     name: '',
