@@ -80,6 +80,7 @@ export default {
       let thumbnailUrl = ""
       if(this.file) {
         const filePath = `/room/${this.file.name}`
+        console.log(filePath)
         await firebase.storage().ref()
           .child(filePath)
           .put(this.file)
@@ -96,7 +97,7 @@ export default {
         createdAt: firebase.firestore.Timestamp.now()
       })
       .then(result => {
-        console.log("sucees to create room", result)
+        console.log("success to create room", result)
         this.dialog = false
       })
 

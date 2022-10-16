@@ -21,9 +21,9 @@
                   <v-list-item
                       :key="index"
                   >
-                    <v-list-item-avatar color="grey darken-1">
-                      <v-img :src="data.photoURL"></v-img>
-                    </v-list-item-avatar>
+<!--                    <v-list-item-avatar color="grey darken-1">-->
+<!--                      <v-img :src="data.photoURL"></v-img>-->
+<!--                    </v-list-item-avatar>-->
 
                     <v-list-item-content>
                       <v-list-item-subtitle class="message">
@@ -106,9 +106,6 @@ export default {
 
   },
   mounted() {
-    this.auth = JSON.parse(sessionStorage.getItem('user'))
-    console.log("auth", this.auth)
-
     const roomRef = firebase.firestore().collection('rooms').doc(this.roomId);
     roomRef.collection('messages').orderBy('createdAt', 'asc')
     .onSnapshot(snapshot => {
@@ -166,8 +163,8 @@ export default {
       const roomRef = firebase.firestore().collection('rooms').doc(this.roomId);
       roomRef.collection('messages').add({
         message: this.body,
-        name: this.auth.displayName,
-        photoURL: this.auth.photoURL,
+        name: 'anonymous',
+        // photoURL: '',
         createdAt: firebase.firestore.Timestamp.now(),
       })
       .then(result => {
