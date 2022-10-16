@@ -5,8 +5,8 @@
         app
         shrink-on-scroll
     >
-
-      <v-toolbar-title>ルームの一覧</v-toolbar-title>
+      <button @click="onCall">送信</button>
+      <v-toolbar-title>ルーム一覧</v-toolbar-title>
       <CreateRoom />
 
       <v-spacer></v-spacer>
@@ -111,10 +111,14 @@ export default {
   },
   data: () => ({
     rooms: [],
+<<<<<<< Updated upstream
     name: '',
     phoneNumber: '',
     latitude: 0,
     longitude: 0
+=======
+    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3'))
+>>>>>>> Stashed changes
   }),
   mounted() {
 
@@ -163,6 +167,13 @@ export default {
 
 
 
+    },
+    onCall:function() {
+      setTimeout(this.ringTone, 3000)
+    },
+    ringTone:function() {
+      this.ringtone.currentTime = 0 // 連続で鳴らせるように
+      this.ringtone.play()
     }
   }
   //
