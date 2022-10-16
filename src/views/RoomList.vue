@@ -114,51 +114,29 @@ export default {
     name: '',
     phoneNumber: '',
     latitude: 0,
-     longitude: 0
+    longitude: 0
   }),
   mounted() {
+
     this.getRooms()
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position){
+          let coords = position.coords;
+          // 緯度経度だけ取得
+          this.latitude = coords.latitude;
+          this.longitude = coords.longitude;
+        }.bind(this),
+        function(error) {
+          console.error(error);
+        }
+      );
+    } else {
+        console.error("Geolocation APIに対応していません");
+    }
   },
   methods: {
-    getLocation () {
-      console.log('getLocationCalled');
-     if (process.client) {
-       if (!navigator.geolocation) {
-         alert('現在地情報を取得できませんでした。お使いのブラウザでは現在地情報を利用できない可能性があります。エリアを入力してください。')
-         return
-       }
-
-       const options = {
-         enableHighAccuracy: false,
-         timeout: 5000,
-         maximumAge: 0
-       }
-
-       navigator.geolocation.getCurrentPosition(this.success, this.error, options)
-     }
-   },
-
-   success (position) {
-     this.latitude = position.coords.latitude
-     this.longitude = position.coords.longitude
-   },
-
-   error (error) {
-     switch (error.code) {
-       case 1: //PERMISSION_DENIED
-         alert('位置情報の利用が許可されていません')
-         break
-       case 2: //POSITION_UNAVAILABLE
-         alert('現在位置が取得できませんでした')
-         break
-       case 3: //TIMEOUT
-         alert('タイムアウトになりました')
-         break
-       default:
-         alert('現在位置が取得できませんでした')
-         break
-     }
-   },
 
     async getRooms() {
       this.rooms = []
