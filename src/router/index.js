@@ -6,6 +6,7 @@ import RoomList from '../views/RoomList.vue'
 import ChatBoard from '../views/ChatBoard.vue'
 import Login from '../views/Login.vue'
 import SingUp from '../views/SignUp.vue'
+import Call from '../views/Call.vue'
 // import firebase from "@/firebase/firebase"
 
 Vue.use(VueRouter)
@@ -39,6 +40,11 @@ const routes = [
         path: '/signup',
         name: 'SignUp',
         component: SingUp
+    },
+    {
+        path: '/call',
+        name: 'Call',
+        component: Call
     },
 
 ]

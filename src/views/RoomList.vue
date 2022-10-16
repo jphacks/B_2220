@@ -21,7 +21,7 @@
               required
             ></v-text-field>
         </div>
-        
+ 
         <div class="d-block pa-2">
           <p>{{ name }}</p>
           <p>2.あなたの名前を入力してください</p>
@@ -71,7 +71,7 @@
                 :loading="loading"
                 :disabled="loading"
                 color="secondary"
-                @click="onCall"
+                to="/Call"
               >
                 発信する
               </v-btn>
@@ -164,13 +164,7 @@ export default {
 
 
     },
-    onCall:function() {
-      setTimeout(this.ringTone, 3000)
-    },
-    ringTone:function() {
-      this.ringtone.currentTime = 0 // 連続で鳴らせるように
-      this.ringtone.play()
-    },
+
     getLocation: function() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
