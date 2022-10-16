@@ -66,6 +66,20 @@
           </div>
         </div>
 
+          <div class="p-map">
+            <iframe
+              :src="this.mapRequestUrl"
+              width="100%"
+              height="auto"
+              frameborder="0"
+              style="border:0"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+
+          </div>
+        </template>
         <div class="d-block pa-2">
           <p>4.フェイク通話を開始するボタンを押してください</p>
             <div class="text-center">
@@ -195,7 +209,6 @@ export default {
       }
     }
   }
-  //
 }
 </script>
 
