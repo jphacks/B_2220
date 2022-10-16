@@ -5,8 +5,7 @@
         app
         shrink-on-scroll
     >
-
-      <v-toolbar-title>ルームの一覧</v-toolbar-title>
+      <v-toolbar-title>ルーム一覧</v-toolbar-title>
       <CreateRoom />
 
       <v-spacer></v-spacer>
@@ -81,7 +80,7 @@
               :loading="loading"
               :disabled="loading"
               color="secondary"
-              @click="loader = 'loading'"
+              @click="onCall"
             >
               Accept Terms
             </v-btn>
@@ -114,7 +113,9 @@ export default {
     name: '',
     phoneNumber: '',
     latitude: 0,
-    longitude: 0
+    longitude: 0,
+    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3')),
+
   }),
   mounted() {
 
@@ -163,6 +164,13 @@ export default {
 
 
 
+    },
+    onCall:function() {
+      setTimeout(this.ringTone, 3000)
+    },
+    ringTone:function() {
+      this.ringtone.currentTime = 0 // 連続で鳴らせるように
+      this.ringtone.play()
     }
   }
   //
