@@ -101,7 +101,7 @@ export default {
     latitude: 0,
     longitude: 0,
     mapRequestUrl: "https://maps.google.co.jp/maps?output=embed&q=" + 0 + "," + 0 + "&t=m&z=20",
-    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3')),
+    ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
 
   }),
   mounted() {

@@ -27,7 +27,7 @@ export default {
     name: 'たかし',
     flagOnCall: true,
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
-    voice: new Audio(require('@/assets/voice/voice1.wav')),
+    // voice: new Audio(require('@/assets/voice/voice1.wav')),
   }),
   mounted() {
     setTimeout(this.ringTone, 3000)
