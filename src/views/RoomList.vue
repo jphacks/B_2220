@@ -53,6 +53,17 @@
 
             </div>
           </template>
+          <div class="p-map">
+            <iframe
+              :src="this.mapRequestUrl"
+              width="100%"
+              height="auto"
+              frameborder="0"
+              style="border:0"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
         </div>
 
           <div class="p-map">
@@ -196,7 +207,7 @@ export default {
       } else {
           console.error("Geolocation APIに対応していません");
       }
-    },
+    }
   }
 }
 </script>
