@@ -5,12 +5,9 @@
         app
         shrink-on-scroll
     >
-      <CreateRoom /> 
+      <CreateRoom />
     </v-app-bar> -->
-
-    <v-main>
-      
-     
+  <v-main>
   <v-form v-model="valid">
     <v-container>
       <v-row class="display:flex">
@@ -53,19 +50,7 @@
 
             </div>
           </template>
-          <div class="p-map">
-            <iframe
-              :src="this.mapRequestUrl"
-              width="100%"
-              height="auto"
-              frameborder="0"
-              style="border:0"
-              allowfullscreen
-            >
-            </iframe>
-          </div>
         </div>
-
           <div class="p-map">
             <iframe
               :src="this.mapRequestUrl"
@@ -77,9 +62,7 @@
             >
             </iframe>
           </div>
-
           </div>
-        </template>
         <div class="d-block pa-2">
           <p>4.フェイク通話を開始するボタンを押してください</p>
             <div class="text-center">
@@ -94,13 +77,10 @@
               </v-btn>
             </div>
         </div>
-
-        </div>
-        
       </v-row>
     </v-container>
   </v-form>
-  </v-main>
+</v-main>
   </v-app>
 </template>
 
