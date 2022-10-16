@@ -5,7 +5,6 @@
         app
         shrink-on-scroll
     >
-      <button @click="onCall">送信</button>
       <v-toolbar-title>ルーム一覧</v-toolbar-title>
       <CreateRoom />
 
@@ -81,7 +80,7 @@
               :loading="loading"
               :disabled="loading"
               color="secondary"
-              @click="loader = 'loading'"
+              @click="onCall"
             >
               Accept Terms
             </v-btn>
@@ -111,14 +110,12 @@ export default {
   },
   data: () => ({
     rooms: [],
-<<<<<<< Updated upstream
     name: '',
     phoneNumber: '',
     latitude: 0,
-    longitude: 0
-=======
-    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3'))
->>>>>>> Stashed changes
+    longitude: 0,
+    ringtone: new Audio(require('@/assets/ringtone/ringtone1.mp3')),
+
   }),
   mounted() {
 
