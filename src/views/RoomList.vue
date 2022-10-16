@@ -80,7 +80,7 @@
               :loading="loading"
               :disabled="loading"
               color="secondary"
-              @click="onCall"
+              to="/Call"
             >
               Accept Terms
             </v-btn>
@@ -165,13 +165,13 @@ export default {
 
 
     },
-    onCall:function() {
-      setTimeout(this.ringTone, 3000)
-    },
-    ringTone:function() {
-      this.ringtone.currentTime = 0 // 連続で鳴らせるように
-      this.ringtone.play()
-    }
+    // onCall:function() {
+    //   setTimeout(this.ringTone, 3000)
+    // },
+    // ringTone:function() {
+    //   this.ringtone.currentTime = 0 // 連続で鳴らせるように
+    //   this.ringtone.play()
+    // }
   }
   //
 }
