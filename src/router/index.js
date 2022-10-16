@@ -15,7 +15,7 @@ const routes = [
         path: '/',
         name: 'RoomList',
         component: RoomList,
-        meta: {requiresAuth: true}
+        // meta: {requiresAuth: true}
     },
     {
         path: '/about',
