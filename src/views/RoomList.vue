@@ -6,7 +6,7 @@
         shrink-on-scroll
     >
 
-      <v-toolbar-title>ルーム一覧</v-toolbar-title>
+      <v-toolbar-title>ルームの一覧</v-toolbar-title>
       <CreateRoom />
 
       <v-spacer></v-spacer>
@@ -17,42 +17,84 @@
     </v-app-bar>
 
     <v-main>
-      <v-container>
-        <v-row>
-          <v-col
-              v-for="room in rooms"
-              :key="room.id"
-              cols="4"
+      
+      <template>
+  <v-form v-model="valid">
+    <v-container>
+      <v-row>
+        <v-col
+          cols="12"
+          md="4"
+        >
+        <p>{{ phoneNumber }}</p>
+        <p>1.発信する電話番号を入力してください</p>
+          <v-text-field
+            v-model="phoneNumber"
+            label="電話番号を入力してください"
+            required
+          ></v-text-field>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="4"
+        >
+        <p>{{ name }}</p>
+        <p>2.あなたの名前を入力してください</p>
+          <v-text-field
+            v-model="name"
+            label="名前を入力してください"
+            required
+          ></v-text-field>
+        </v-col>
+        
+        <v-col
+          cols="12"
+          md="4"
+        >
+
+        <p>3.位置情報の取得を許可してください</p>
+        <div>
+        </div>
+        <template>
+        <div class="text-center">
+          <v-btn
+            class="ma-2"
+            :loading="loading"
+            :disabled="loading"
+            color="secondary"
+            @click="getLocation"
           >
-            <router-link :to="{ path: '/chat', query: { room_id: room.id }}">
-              <v-avatar color="grey lighten-2" size="128">
-                <img
-                  src="https://cdn.vuetifyjs.com/images/john.jpg"
-                  alt="John"
-                  v-if="!room.thumbnailUrl"
-                >
+            Accept Terms
+          </v-btn>
+          <p>{{ latitude }}</p>
+          <p>{{ longitude }}</p>
 
-                <img
-                  :src="room.thumbnailUrl"
-                  alt="John"
-                  v-if="room.thumbnailUrl"
-                >
-              </v-avatar>
-            </router-link>
+          </div>
+        </template>
 
-          </v-col>
-<!--          <v-col-->
-<!--              v-for="n in 24"-->
-<!--              :key="n"-->
-<!--              cols="4"-->
-<!--          >-->
-<!--            <router-link :to="{ path: '/chat', query: { user_id: n }}">-->
-<!--              <v-avatar color="grey lighten-2" size="128"></v-avatar>-->
-<!--            </router-link>-->
+        <p>4.あなたの名前を入力してください</p>
+        <template>
+          <div class="text-center">
+            <v-btn
+              class="ma-2"
+              :loading="loading"
+              :disabled="loading"
+              color="secondary"
+              @click="loader = 'loading'"
+            >
+              Accept Terms
+            </v-btn>
 
-<!--          </v-col>-->
-        </v-row>
-      </v-container>
+          </div>
+        </template>
+
+          
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
+</template>
     </v-main>
   </v-app>
 </template>
@@ -68,12 +110,34 @@ export default {
     CreateRoom
   },
   data: () => ({
-    rooms: []
+    rooms: [],
+    name: '',
+    phoneNumber: '',
+    latitude: 0,
+    longitude: 0
   }),
   mounted() {
+
     this.getRooms()
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position){
+          let coords = position.coords;
+          // 緯度経度だけ取得
+          this.latitude = coords.latitude;
+          this.longitude = coords.longitude;
+        }.bind(this),
+        function(error) {
+          console.error(error);
+        }
+      );
+    } else {
+        console.error("Geolocation APIに対応していません");
+    }
   },
   methods: {
+
     async getRooms() {
       this.rooms = []
       const roomRef = firebase.firestore().collection("rooms")
