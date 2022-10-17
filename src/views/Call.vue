@@ -21,6 +21,7 @@
 </template>
 
 <script>
+
 export default {
   name: "call",
   data: () => ({
@@ -40,8 +41,27 @@ export default {
     onCall:function() {
       this.flagOnCall = false
       this.ringtone.pause()
-      this.voice.play()
+      setTimeout(this.emergencyCall,100)
     },
+    emergencyCall:function() {
+      // Download the helper library from https://www.twilio.com/docs/node/install
+      // Find your Account SID and Auth Token at twilio.com/console
+      // and set the environment variables. See http://twil.io/secure
+
+      const accountSid = process.env.VUE_APP_ACCOUNT_SID;
+      const authToken = process.env.VUE_APP_AUTH_TOKEN;
+      const phoneNumber = process.env.VUE_APP_PHONE_NUMBER;
+
+      const client = require('twilio')(accountSid, authToken);
+
+      client.calls
+          .create({
+            twiml: '<Response><Say>Ahoy, World!</Say></Response>',
+            to: '00012345678',
+            from: phoneNumber,
+          })
+          .then(call => console.log(call.sid));
+    }
   }
 }
 </script>
