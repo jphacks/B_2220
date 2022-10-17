@@ -24,9 +24,9 @@
 export default {
   name: "call",
   data: () => ({
-    name: 'たかし',
     flagOnCall: true,
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
+    name: sessionStorage.getItem('name'),
     // voice: new Audio(require('@/assets/voice/voice1.wav')),
   }),
   mounted() {
@@ -40,8 +40,29 @@ export default {
     onCall:function() {
       this.flagOnCall = false
       this.ringtone.pause()
-      this.voice.play()
+      setTimeout(this.emergencyCall,100)
     },
+    emergencyCall:function() {
+      // Download the helper library from https://www.twilio.com/docs/node/install
+      // Find your Account SID and Auth Token at twilio.com/console
+      // and set the environment variables. See http://twil.io/secure
+
+      const accountSid = process.env.VUE_APP_ACCOUNT_SID;
+      const authToken = process.env.VUE_APP_AUTH_TOKEN;
+      const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
+      const phoneNumberTo = '+81' + sessionStorage.getItem('phoneNumber').slice(1);
+      const googleMapUrl = sessionStorage.getItem('googleMapUrl');
+
+      const client = require('twilio')(accountSid, authToken);
+
+      client.calls
+          .create({
+            twiml: '<Response><Say>' + googleMapUrl + '</Say></Response>',
+            to: phoneNumberTo,
+            from: phoneNumberFrom,
+          })
+          .then(call => console.log(call.sid));
+    }
   }
 }
 </script>
