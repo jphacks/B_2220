@@ -13,7 +13,6 @@
       <v-row class="display:flex">
         <div>
         <div class="d-block pa-2">
-          <p>{{ phoneNumber }}</p>
           <p>1.発信する電話番号を入力してください</p>
             <v-text-field
               v-model='phoneNumber'
@@ -23,7 +22,6 @@
         </div>
  
         <div class="d-block pa-2">
-          <p>{{ name }}</p>
           <p>2.あなたの名前を入力してください</p>
             <v-text-field
               v-model='name'
@@ -179,9 +177,10 @@ export default {
           console.error("Geolocation APIに対応していません");
       }
     },
-    saveData: function() {
-      sessionStorage.setItem('name', this.name); // 👈 sessionStorageへ保存
-      sessionStorage.setItem('phoneNumber', this.phoneNumber); // 👈 sessionStorageへ保存
+    saveData: function() { // sessionStorageへ保存する
+      sessionStorage.setItem('name', this.name); 
+      sessionStorage.setItem('phoneNumber', this.phoneNumber); 
+      sessionStorage.setItem('googleMapUrl', 'https://maps.google.co.jp/maps?ll=' + this.latitude + ',' + this.longitude); 
     }
   }
 }
