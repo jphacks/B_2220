@@ -21,13 +21,12 @@
 </template>
 
 <script>
-
 export default {
   name: "call",
   data: () => ({
-    name: 'たかし',
     flagOnCall: true,
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
+    name: sessionStorage.getItem('name'),
     // voice: new Audio(require('@/assets/voice/voice1.wav')),
   }),
   mounted() {
@@ -50,15 +49,17 @@ export default {
 
       const accountSid = process.env.VUE_APP_ACCOUNT_SID;
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
-      const phoneNumber = process.env.VUE_APP_PHONE_NUMBER;
+      const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
+      const phoneNumberTo = '+81' + sessionStorage.getItem('phoneNumber').slice(1);
+      const googleMapUrl = sessionStorage.getItem('googleMapUrl');
 
       const client = require('twilio')(accountSid, authToken);
 
       client.calls
           .create({
-            twiml: '<Response><Say>Ahoy, World!</Say></Response>',
-            to: '00012345678',
-            from: phoneNumber,
+            twiml: '<Response><Say>' + googleMapUrl + '</Say></Response>',
+            to: phoneNumberTo,
+            from: phoneNumberFrom,
           })
           .then(call => console.log(call.sid));
     }
