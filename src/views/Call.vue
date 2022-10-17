@@ -50,14 +50,15 @@ export default {
 
       const accountSid = process.env.VUE_APP_ACCOUNT_SID;
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
+      const phoneNumber = process.env.VUE_APP_PHONE_NUMBER;
 
       const client = require('twilio')(accountSid, authToken);
 
       client.calls
           .create({
             twiml: '<Response><Say>Ahoy, World!</Say></Response>',
-            to: '+818047100803',
-            from: '+14057844680',
+            to: '00012345678',
+            from: phoneNumber,
           })
           .then(call => console.log(call.sid));
     }
