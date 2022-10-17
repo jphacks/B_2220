@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <div class="text-center">
-      <p>着信</p>
-      <p>{{ name }}</p>
-      <v-btn
+    <div>
+      <div>
+      <p>応答</p>
+      <v-btn 
           class="mx-2"
           fab
           dark
@@ -13,10 +13,27 @@
           v-if="flagOnCall"
       >
         <v-icon dark>
+        </v-icon>
+      </v-btn>
+    </div>
+    <div> 
+      <p>終了</p>
+      <p>{{ name }}</p>
+      <v-btn
+          class="mx-2"
+          fab
+          dark
+          large
+          color="pink"
+          @click="offCall"
+          v-if="flagOnCall"
+      >
+        <v-icon dark>
           mdi-phone-hangup
         </v-icon>
       </v-btn>
     </div>
+  </div>
   </v-app>
 </template>
 
@@ -62,6 +79,10 @@ export default {
             from: phoneNumberFrom,
           })
           .then(call => console.log(call.sid));
+    },
+    offCall:function() {
+      this.flagOnCall = true
+      this.ringtone.pause()
     }
   }
 }
