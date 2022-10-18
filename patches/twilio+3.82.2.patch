@@ -1,0 +1,13 @@
+diff --git a/node_modules/twilio/lib/rest/Twilio.js b/node_modules/twilio/lib/rest/Twilio.js
+index c73999e..17314bc 100644
+--- a/node_modules/twilio/lib/rest/Twilio.js
++++ b/node_modules/twilio/lib/rest/Twilio.js
+@@ -281,7 +281,7 @@ Twilio.prototype.request = function request(opts) {
+     headers.Accept = 'application/json';
+   }
+ 
+-  var uri = new url.URL(opts.uri);
++  var uri = new URL(opts.uri);
+   uri.hostname = this.getHostname(uri.hostname, this.edge, this.region);
+ 
+   return this.httpClient.request({

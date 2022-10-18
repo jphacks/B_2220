@@ -55,6 +55,14 @@ const router = new VueRouter({
     routes
 })
 
+const audio = new Audio('call01.mp3');
+audio.play();
+
+const audio2 = new Audio('call02.wav');
+audio2.play();
+
+const audio3 = new Audio('call03.wav');
+audio3.play();
 
 // router.beforeEach((to, from, next) => {
 //     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
