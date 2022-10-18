@@ -34,8 +34,72 @@
       </v-btn>
     </div>
   </div>
+  <div> 
+      <p>自動音声を流す</p>
+      <p>{{ name }}</p>
+      <v-btn
+          class="mx-2"
+          fab
+          dark
+          large
+          color="green"
+          @click="startAiVoice"
+      >
+        <v-icon dark>
+          AI
+        </v-icon>
+      </v-btn>
+    </div>
+    <div> 
+      <p>自動音声2を流す</p>
+      <p>{{ name }}</p>
+      <v-btn
+          class="mx-2"
+          fab
+          dark
+          large
+          color="green"
+          @click="startAiVoice2"
+      >
+        <v-icon dark>
+          AI2
+        </v-icon>
+      </v-btn>
+    </div>
+    <div> 
+      <p>自動音声3を流す</p>
+      <p>{{ name }}</p>
+      <v-btn
+          class="mx-2"
+          fab
+          dark
+          large
+          color="green"
+          @click="startAiVoice3"
+      >
+        <v-icon dark>
+          AI3
+        </v-icon>
+      </v-btn>
+    </div>
+    <div> 
+      <p>発声</p>
+      <v-btn
+          class="mx-2"
+          fab
+          dark
+          large
+          color="yellow"
+          @click="useMicrophone"
+      >
+        <v-icon dark>
+          話す
+        </v-icon>
+      </v-btn>
+    </div>
   </v-app>
 </template>
+
 
 <script>
 export default {
@@ -45,6 +109,9 @@ export default {
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
     name: sessionStorage.getItem('name'),
     // voice: new Audio(require('@/assets/voice/voice1.wav')),
+    audio: new Audio(require('@/assets/voice/call01.mp3')),
+    audio2: new Audio(require('@/assets/voice/call02.wav')),
+    audio3: new Audio(require('@/assets/voice/call03.wav')),
   }),
   mounted() {
     setTimeout(this.ringTone, 3000)
@@ -58,6 +125,10 @@ export default {
       this.flagOnCall = false
       this.ringtone.pause()
       setTimeout(this.emergencyCall,100)
+    },
+    offCall:function() {
+      this.flagOnCall = true
+      this.ringtone.pause()
     },
     emergencyCall:function() {
       // Download the helper library from https://www.twilio.com/docs/node/install
@@ -80,9 +151,36 @@ export default {
           })
           .then(call => console.log(call.sid));
     },
-    offCall:function() {
-      this.flagOnCall = true
-      this.ringtone.pause()
+    useMicrophone:function(){
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      const recognition = new SpeechRecognition();
+      if ('SpeechRecognition' in window) {
+        // ユーザのブラウザは音声合成に対応しています。
+        console.log('音声合成に対応しています。');
+      } else {
+        // ユーザのブラウザは音声合成に対応していません。
+        console.log('音声合成に対応していません。');
+      }
+      recognition.onresult = (event) => {
+        if( 0 > event.results.length ){
+          alert('音声が取得できませんでした。');
+        }else{
+          alert(event.results[0][0].transcript);
+        }
+      }
+      recognition.start();
+    },
+    startAiVoice:function () {
+      this.audio.currentTime = 0 // 連続で鳴らせるように
+      this.audio.play() // 鳴らす
+    },
+    startAiVoice2:function () {
+      this.audio2.currentTime = 0 // 連続で鳴らせるように
+      this.audio2.play() // 鳴らす
+    },
+    startAiVoice3:function () {
+      this.audio3.currentTime = 0 // 連続で鳴らせるように
+      this.audio3.play() // 鳴らす
     }
   }
 }
