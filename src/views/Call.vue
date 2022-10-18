@@ -102,6 +102,7 @@
 
 
 <script>
+import axios from 'axios';
 export default {
   name: "call",
   data: () => ({
@@ -114,6 +115,21 @@ export default {
     audio3: new Audio(require('@/assets/voice/call03.wav')),
   }),
   mounted() {
+    var config = {
+      method: 'searchByGeolocation',
+      url: 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation',
+      data: {
+        x: 35.6797777,
+        y: 139.77165
+      }
+    };
+    axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     setTimeout(this.ringTone, 3000)
   },
   methods: {
@@ -124,7 +140,7 @@ export default {
     onCall:function() {
       this.flagOnCall = false
       this.ringtone.pause()
-      setTimeout(this.emergencyCall,100)
+      setTimeout(this.emergencyCall,300)
     },
     offCall:function() {
       this.flagOnCall = true
@@ -150,6 +166,14 @@ export default {
             from: phoneNumberFrom,
           })
           .then(call => console.log(call.sid));
+      client.messages
+          .create({
+            body: this.name + 'さんの応答が' + '途絶えました。',
+            to: phoneNumberTo,
+            from: phoneNumberFrom,
+          })
+          .then(message => console.log(message.sid));
+
     },
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
