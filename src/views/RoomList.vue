@@ -71,7 +71,7 @@
                 color="secondary"
                 @click="saveData"
               >
-                発信する
+                フェイク通話を開始する
               </v-btn>
             </div>
         </div>
