@@ -42,6 +42,7 @@
 
 <script>
 import axios from 'axios';
+import qs from "qs";
 export default {
   name: "call",
   data: () => ({
@@ -54,65 +55,91 @@ export default {
     audio3: new Audio(require('@/assets/voice/call03.wav')),
   }),
   mounted() {
-    var config = {
-      method: 'searchByGeolocation',
-      url: 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation',
-      data: {
-        x: 35.6797777,
-        y: 139.77165
-      }
-    };
-    axios(config)
-        .then(function (response) {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    // var config = {
+    //   method: 'searchByGeolocation',
+    //   url: 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation',
+    //   data: {
+    //     x: 35.6797777,
+    //     y: 139.77165
+    //   }
+    // };
+    // axios(config)
+    //     .then(function (response) {
+    //       console.log(JSON.stringify(response.data));
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
     setTimeout(this.ringTone, 3000)
   },
   methods: {
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
+      setTimeout(this.emergencyCall,300)
     },
     onCall:function() {
       this.flagOnCall = false
       this.ringtone.pause()
-      setTimeout(this.emergencyCall,300)
     },
     offCall:function() {
       this.flagOnCall = true
       this.ringtone.pause()
     },
     emergencyCall:function() {
-      // Download the helper library from https://www.twilio.com/docs/node/install
-      // Find your Account SID and Auth Token at twilio.com/console
-      // and set the environment variables. See http://twil.io/secure
-
       const accountSid = process.env.VUE_APP_ACCOUNT_SID;
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
       const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
       const phoneNumberTo = '+81' + sessionStorage.getItem('phoneNumber').slice(1);
       const googleMapUrl = sessionStorage.getItem('googleMapUrl');
 
-      const client = require('twilio')(accountSid, authToken);
+      var qs = require('qs');
+      var callData = qs.stringify({
+        'Twiml': '<Response><Say>' + googleMapUrl + '</Say></Response>',
+        'To': phoneNumberTo,
+        'From': phoneNumberFrom
+      });
+      var callConfig = {
+        method: 'post',
+        url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Calls.json',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : callData
+      };
 
-      client.calls
-          .create({
-            twiml: '<Response><Say>' + googleMapUrl + '</Say></Response>',
-            to: phoneNumberTo,
-            from: phoneNumberFrom,
+      axios(callConfig)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
           })
-          .then(call => console.log(call.sid));
-      client.messages
-          .create({
-            body: this.name + 'さんの応答が' + '途絶えました。',
-            to: phoneNumberTo,
-            from: phoneNumberFrom,
-          })
-          .then(message => console.log(message.sid));
+          .catch(function (error) {
+            console.log(error);
+          });
 
+
+      var SMSData = qs.stringify({
+        'Body': this.name + 'さんの応答が' + '途絶えました。',
+        'To': phoneNumberTo,
+        'From': phoneNumberFrom
+      });
+      var SMSConfig = {
+        method: 'post',
+        url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Messages.json',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : SMSData
+      };
+
+      axios(SMSConfig)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     },
     recognizeVoice:function(){
       this.startAiVoice()
