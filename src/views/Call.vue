@@ -52,26 +52,23 @@ export default {
     audio: new Audio(require('@/assets/voice/call01.mp3')),
     audio2: new Audio(require('@/assets/voice/call02.wav')),
     audio3: new Audio(require('@/assets/voice/call03.wav')),
+    address: '',
   }),
-  mounted() {
-    var config = {
-      method: 'searchByGeolocation',
-      url: 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation',
-      data: {
-        x: 35.6797777,
-        y: 139.77165
-      }
-    };
-    axios(config)
-        .then(function (response) {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+  async mounted() {
+    this.address = await this.getAddressFromGPS();
+    console.log("住所", this.address);
     setTimeout(this.ringTone, 3000)
   },
   methods: {
+    // セッションストレージに保存した緯度経度から、住所を取得する
+    async getAddressFromGPS(){
+      const req = 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x='+ sessionStorage.getItem('longitude') + '&y=' + sessionStorage.getItem('latitude');
+      // console.log(req);
+      const res =  await axios.get(req);
+      console.log("住所", JSON.stringify(res.data));
+      // 都道府県・市区町村・町域名を取得して返却
+      return res.data.response.location[0].prefecture + res.data.response.location[0].city + res.data.response.location[0].town;
+    },
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
@@ -100,14 +97,14 @@ export default {
 
       client.calls
           .create({
-            twiml: '<Response><Say>' + googleMapUrl + '</Say></Response>',
+            twiml: '<Response><Say  language="ja-jp">' + this.address + '</Say></Response>',
             to: phoneNumberTo,
             from: phoneNumberFrom,
           })
           .then(call => console.log(call.sid));
       client.messages
           .create({
-            body: this.name + 'さんの応答が' + '途絶えました。',
+            body: this.name + 'さんの応答が' + this.address + '付近で途絶えました。 \n' + googleMapUrl,
             to: phoneNumberTo,
             from: phoneNumberFrom,
           })
