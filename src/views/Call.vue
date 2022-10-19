@@ -42,6 +42,7 @@
 
 <script>
 import axios from 'axios';
+import qs from "qs";
 export default {
   name: "call",
   data: () => ({
@@ -94,7 +95,7 @@ export default {
 
       var qs = require('qs');
       var data = qs.stringify({
-        'Twiml': '<Response><Say>Hello! World!Hello! World!Hello! World!Hello! World!Hello! World!Hello! World!Hello! World!Hello! World!</Say></Response>',
+        'Twiml': '<Response><Say>' + googleMapUrl + '</Say></Response>',
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
@@ -102,13 +103,37 @@ export default {
         method: 'post',
         url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Calls.json',
         headers: {
-          'Authorization': 'Basic QUMyNTk5ZjVhNTVmMGRlYjY5MDAxZTIzZmMwZmIwNmQzNzplODg0ZDgwYjVhNzllMWRmMTJhNjJlYWJiZWVmN2Y1Zg==',
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         data : data
       };
 
       axios(config)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+
+      var dataSMS = qs.stringify({
+        'Body': this.name + 'さんの応答が' + '途絶えました。',
+        'To': phoneNumberTo,
+        'From': phoneNumberFrom
+      });
+      var configSMS = {
+        method: 'post',
+        url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Messages.json',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : dataSMS
+      };
+
+      axios(configSMS)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
           })
