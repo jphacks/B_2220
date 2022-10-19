@@ -13,7 +13,7 @@
       <v-row class="display:flex">
         <div>
         <div class="d-block pa-2">
-          <p>1.発信する電話番号を入力してください</p>
+          <p>1.緊急連絡先を入力してください</p>
             <v-text-field
               v-model='phoneNumber'
               label='電話番号を入力してください'
@@ -71,7 +71,7 @@
                 color="secondary"
                 @click="saveData"
               >
-                発信する
+                フェイク通話を開始する
               </v-btn>
             </div>
         </div>

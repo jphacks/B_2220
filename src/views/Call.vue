@@ -9,7 +9,7 @@
           dark
           large
           color="cyan"
-          @click="onCall"
+          @click="recognizeVoice"
           v-if="flagOnCall"
       >
         <v-icon dark>
@@ -33,76 +33,16 @@
         </v-icon>
       </v-btn>
     </div>
+    <p>{{ messagea }}</p>
+    <p>{{ messagem }}</p>
   </div>
-  <div> 
-      <p>自動音声を流す</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="green"
-          @click="startAiVoice"
-      >
-        <v-icon dark>
-          AI
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>自動音声2を流す</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="green"
-          @click="startAiVoice2"
-      >
-        <v-icon dark>
-          AI2
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>自動音声3を流す</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="green"
-          @click="startAiVoice3"
-      >
-        <v-icon dark>
-          AI3
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>発声</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="yellow"
-          @click="useMicrophone"
-      >
-        <v-icon dark>
-          話す
-        </v-icon>
-      </v-btn>
-    </div>
   </v-app>
 </template>
 
 
 <script>
 import axios from 'axios';
+import qs from "qs";
 export default {
   name: "call",
   data: () => ({
@@ -115,96 +55,141 @@ export default {
     audio3: new Audio(require('@/assets/voice/call03.wav')),
   }),
   mounted() {
-    var config = {
-      method: 'searchByGeolocation',
-      url: 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation',
-      data: {
-        x: 35.6797777,
-        y: 139.77165
-      }
-    };
-    axios(config)
-        .then(function (response) {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    // var config = {
+    //   method: 'searchByGeolocation',
+    //   url: 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation',
+    //   data: {
+    //     x: 35.6797777,
+    //     y: 139.77165
+    //   }
+    // };
+    // axios(config)
+    //     .then(function (response) {
+    //       console.log(JSON.stringify(response.data));
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
     setTimeout(this.ringTone, 3000)
   },
   methods: {
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
+      setTimeout(this.emergencyCall,300)
     },
     onCall:function() {
       this.flagOnCall = false
       this.ringtone.pause()
-      setTimeout(this.emergencyCall,300)
     },
     offCall:function() {
       this.flagOnCall = true
       this.ringtone.pause()
     },
     emergencyCall:function() {
-      // Download the helper library from https://www.twilio.com/docs/node/install
-      // Find your Account SID and Auth Token at twilio.com/console
-      // and set the environment variables. See http://twil.io/secure
-
       const accountSid = process.env.VUE_APP_ACCOUNT_SID;
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
       const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
       const phoneNumberTo = '+81' + sessionStorage.getItem('phoneNumber').slice(1);
       const googleMapUrl = sessionStorage.getItem('googleMapUrl');
 
-      const client = require('twilio')(accountSid, authToken);
+      var qs = require('qs');
+      var callData = qs.stringify({
+        'Twiml': '<Response><Say>' + googleMapUrl + '</Say></Response>',
+        'To': phoneNumberTo,
+        'From': phoneNumberFrom
+      });
+      var callConfig = {
+        method: 'post',
+        url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Calls.json',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : callData
+      };
 
-      client.calls
-          .create({
-            twiml: '<Response><Say>' + googleMapUrl + '</Say></Response>',
-            to: phoneNumberTo,
-            from: phoneNumberFrom,
+      axios(callConfig)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
           })
-          .then(call => console.log(call.sid));
-      client.messages
-          .create({
-            body: this.name + 'さんの応答が' + '途絶えました。',
-            to: phoneNumberTo,
-            from: phoneNumberFrom,
-          })
-          .then(message => console.log(message.sid));
+          .catch(function (error) {
+            console.log(error);
+          });
 
+
+      var SMSData = qs.stringify({
+        'Body': this.name + 'さんの応答が' + '途絶えました。',
+        'To': phoneNumberTo,
+        'From': phoneNumberFrom
+      });
+      var SMSConfig = {
+        method: 'post',
+        url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Messages.json',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : SMSData
+      };
+
+      axios(SMSConfig)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    },
+    recognizeVoice:function(){
+      this.startAiVoice()
+      setTimeout(this.useMicrophone, 10000)
     },
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      if ('SpeechRecognition' in window) {
-        // ユーザのブラウザは音声合成に対応しています。
-        console.log('音声合成に対応しています。');
-      } else {
-        // ユーザのブラウザは音声合成に対応していません。
-        console.log('音声合成に対応していません。');
-      }
+      this.makeMessagem();
       recognition.onresult = (event) => {
-        if( 0 > event.results.length ){
-          alert('音声が取得できませんでした。');
-        }else{
+        if( 0 < event.results.length ){
           alert(event.results[0][0].transcript);
+          this.repeatAiVoice();
+          setTimeout(this.useMicrophone, 10000)
         }
-      }
+      };
+      recognition.onnomatch = function(){
+        alert('音声が認識できませんでした。');
+        this.emergencyCall();
+      };
+      recognition.onerror= function(){
+        console.log('音声認識エラーが発生しました。');
+        this.emergencyCall();
+      };
+      // recognition.onsoundend = function(){
+      //   console.log('音声検出終了');
+      // };
       recognition.start();
     },
-    startAiVoice:function () {
-      this.audio.currentTime = 0 // 連続で鳴らせるように
-      this.audio.play() // 鳴らす
+    startAiVoice: function() {
+      this.offCall();
+      this.makeMessagea();
+      setTimeout(this.playAiVoice, 3000)
     },
-    startAiVoice2:function () {
-      this.audio2.currentTime = 0 // 連続で鳴らせるように
-      this.audio2.play() // 鳴らす
+    repeatAiVoice: function() {
+      this.makeMessagea();
+      setTimeout(this.playAiVoice, 300)
     },
-    startAiVoice3:function () {
-      this.audio3.currentTime = 0 // 連続で鳴らせるように
-      this.audio3.play() // 鳴らす
+    playAiVoice:function () {
+      this.audio.play()
+    },
+    makeMessagem:function () {
+      return{
+        messagem : '音声認識を開始します。'
+      }
+    },
+    makeMessagea:function () {
+      return{
+        messagea : 'AI音声を再生します。'
+      }
     }
   }
 }
