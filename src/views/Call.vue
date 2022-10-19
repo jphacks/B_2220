@@ -121,17 +121,12 @@ export default {
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      // if ('SpeechRecognition' in window) {
-      //   // ユーザのブラウザは音声合成に対応しています。
-      //   console.log('音声合成に対応しています。');
-      // } else {
-      //   // ユーザのブラウザは音声合成に対応していません。
-      //   console.log('音声合成に対応していません。');
-      // }
       this.makeMessagem();
       recognition.onresult = (event) => {
         if( 0 < event.results.length ){
           alert(event.results[0][0].transcript);
+          this.repeatAiVoice();
+          setTimeout(this.useMicrophone, 10000)
         }
       };
       recognition.onnomatch = function(){
@@ -151,6 +146,10 @@ export default {
       this.offCall();
       this.makeMessagea();
       setTimeout(this.playAiVoice, 3000)
+    },
+    repeatAiVoice: function() {
+      this.makeMessagea();
+      setTimeout(this.playAiVoice, 300)
     },
     playAiVoice:function () {
       this.audio.play()
