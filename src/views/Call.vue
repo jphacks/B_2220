@@ -9,7 +9,7 @@
           dark
           large
           color="cyan"
-          @click="onCall"
+          @click="recognizeVoice"
           v-if="flagOnCall"
       >
         <v-icon dark>
@@ -33,70 +33,9 @@
         </v-icon>
       </v-btn>
     </div>
+    <p>{{ messagea }}</p>
+    <p>{{ messagem }}</p>
   </div>
-  <div> 
-      <p>自動音声を流す</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="green"
-          @click="startAiVoice"
-      >
-        <v-icon dark>
-          AI
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>自動音声2を流す</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="green"
-          @click="startAiVoice2"
-      >
-        <v-icon dark>
-          AI2
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>自動音声3を流す</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="green"
-          @click="startAiVoice3"
-      >
-        <v-icon dark>
-          AI3
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>発声</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="yellow"
-          @click="useMicrophone"
-      >
-        <v-icon dark>
-          話す
-        </v-icon>
-      </v-btn>
-    </div>
   </v-app>
 </template>
 
@@ -175,36 +114,56 @@ export default {
           .then(message => console.log(message.sid));
 
     },
+    recognizeVoice:function(){
+      this.startAiVoice()
+      setTimeout(this.useMicrophone, 10000)
+    },
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      if ('SpeechRecognition' in window) {
-        // ユーザのブラウザは音声合成に対応しています。
-        console.log('音声合成に対応しています。');
-      } else {
-        // ユーザのブラウザは音声合成に対応していません。
-        console.log('音声合成に対応していません。');
-      }
+      // if ('SpeechRecognition' in window) {
+      //   // ユーザのブラウザは音声合成に対応しています。
+      //   console.log('音声合成に対応しています。');
+      // } else {
+      //   // ユーザのブラウザは音声合成に対応していません。
+      //   console.log('音声合成に対応していません。');
+      // }
+      this.makeMessagem();
       recognition.onresult = (event) => {
-        if( 0 > event.results.length ){
-          alert('音声が取得できませんでした。');
-        }else{
+        if( 0 < event.results.length ){
           alert(event.results[0][0].transcript);
         }
-      }
+      };
+      recognition.onnomatch = function(){
+        alert('音声が認識できませんでした。');
+        this.emergencyCall();
+      };
+      recognition.onerror= function(){
+        console.log('音声認識エラーが発生しました。');
+        this.emergencyCall();
+      };
+      // recognition.onsoundend = function(){
+      //   console.log('音声検出終了');
+      // };
       recognition.start();
     },
-    startAiVoice:function () {
-      this.audio.currentTime = 0 // 連続で鳴らせるように
-      this.audio.play() // 鳴らす
+    startAiVoice: function() {
+      this.offCall();
+      this.makeMessagea();
+      setTimeout(this.playAiVoice, 3000)
     },
-    startAiVoice2:function () {
-      this.audio2.currentTime = 0 // 連続で鳴らせるように
-      this.audio2.play() // 鳴らす
+    playAiVoice:function () {
+      this.audio.play()
     },
-    startAiVoice3:function () {
-      this.audio3.currentTime = 0 // 連続で鳴らせるように
-      this.audio3.play() // 鳴らす
+    makeMessagem:function () {
+      return{
+        messagem : '音声認識を開始します。'
+      }
+    },
+    makeMessagea:function () {
+      return{
+        messagea : 'AI音声を再生します。'
+      }
     }
   }
 }
