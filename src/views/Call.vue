@@ -89,7 +89,8 @@ export default {
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
-      setTimeout(this.emergencyCall,300)
+      // これで着信音が鳴ったらエマージェンシーコールするようにしている
+      // setTimeout(this.emergencyCall,300)
     },
     // フェイク通話をする
     onCall:function() {
