@@ -43,9 +43,6 @@
               >
                 位置情報を取得する
               </v-btn>
-              <p>{{ latitude }}</p>
-              <p>{{ longitude }}</p>
-
             </div>
           </template>
         </div>
