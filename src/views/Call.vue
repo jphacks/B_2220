@@ -94,22 +94,22 @@ export default {
       const googleMapUrl = sessionStorage.getItem('googleMapUrl');
 
       var qs = require('qs');
-      var data = qs.stringify({
+      var callData = qs.stringify({
         'Twiml': '<Response><Say>' + googleMapUrl + '</Say></Response>',
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
-      var config = {
+      var callConfig = {
         method: 'post',
         url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Calls.json',
         headers: {
           'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data : data
+        data : callData
       };
 
-      axios(config)
+      axios(callConfig)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
           })
@@ -118,22 +118,22 @@ export default {
           });
 
 
-      var dataSMS = qs.stringify({
+      var SMSData = qs.stringify({
         'Body': this.name + 'さんの応答が' + '途絶えました。',
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
-      var configSMS = {
+      var SMSConfig = {
         method: 'post',
         url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Messages.json',
         headers: {
           'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data : dataSMS
+        data : SMSData
       };
 
-      axios(configSMS)
+      axios(SMSConfig)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
           })
