@@ -214,6 +214,9 @@ export default {
           console.log(event.results[0][0].transcript);
           this.repeatAiVoice();
           setTimeout(this.useMicrophone, 10000)
+        }else if(event.results.length == 0){
+          console.log("認識した音声はありません。");
+          this.emergencyCall();
         }
       };
       recognition.onnomatch = function(){
@@ -224,9 +227,9 @@ export default {
         console.log('音声認識エラーが発生しました。');
         this.emergencyCall();
       };
-      // recognition.onsoundend = function(){
-      //   console.log('音声検出終了');
-      // };
+      recognition.onsoundend = function(){
+        console.log('音声検出終了');
+      };
       recognition.start();
     },
     startAiVoice: function() {
