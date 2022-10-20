@@ -75,7 +75,7 @@ export default {
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
-      setTimeout(this.emergencyCall,300)
+      // setTimeout(this.emergencyCall,300)
     },
     onCall:function() {
       this.flagOnCall = false
@@ -147,7 +147,6 @@ export default {
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      this.makeMessagem();
       recognition.onresult = (event) => {
         if( 0 < event.results.length ){
           alert(event.results[0][0].transcript);
@@ -170,26 +169,14 @@ export default {
     },
     startAiVoice: function() {
       this.offCall();
-      this.makeMessagea();
       setTimeout(this.playAiVoice, 3000)
     },
     repeatAiVoice: function() {
-      this.makeMessagea();
       setTimeout(this.playAiVoice, 300)
     },
     playAiVoice:function () {
       this.audio.play()
     },
-    makeMessagem:function () {
-      return{
-        messagem : '音声認識を開始します。'
-      }
-    },
-    makeMessagea:function () {
-      return{
-        messagea : 'AI音声を再生します。'
-      }
-    }
   }
 }
 </script>
