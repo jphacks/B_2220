@@ -11,7 +11,7 @@
         <div>
         <v-col>
           <div class="d-block pa-2">
-            <p>1.緊急連絡先を入力してください</p>
+            <p><b>1.緊急連絡先を入力してください</b></p>
               <v-text-field
                 v-model='phoneNumber'
                 label='電話番号を入力してください'
@@ -23,7 +23,7 @@
         </v-col>
         <v-col>
           <div class="d-block pa-2">
-            <p>2.あなたの名前を入力してください</p>
+            <p><b>2.あなたの名前を入力してください</b></p>
               <v-text-field
                 v-model='name'
                 label='名前を入力してください'
@@ -35,12 +35,15 @@
         </v-col>
         <v-col>
           <div class="d-block pa-2">
-          <p>3.位置情報の取得を許可してください</p>
+          <p><b>3.位置情報の取得を許可してください</b></p>
               <v-btn
                 class="ma-2"
                 color="secondary"
                 @click="getLocation"
               >
+                <v-icon>
+                  mdi-map-marker
+                </v-icon>
                 位置情報を取得する
               </v-btn>
         </div>
@@ -58,13 +61,16 @@
         </v-col>
         <v-col>
           <div class="d-block pa-2">
-            <p>4.フェイク通話を開始するボタンを押してください</p>
+            <p><b>4.フェイク通話を開始するボタンを押してください</b></p>
               <div class="text-center">
                 <v-btn
                   class="ma-2"
                   color="secondary"
                   @click="saveData"
                 >
+                  <v-icon>
+                    mdi-phone-in-talk
+                  </v-icon>
                   フェイク通話を開始する
                 </v-btn>
               </div>
