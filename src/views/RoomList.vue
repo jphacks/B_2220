@@ -1,53 +1,48 @@
 <template>
   <v-app id="inspire">
-    <sidebar/>
-    <!-- <v-app-bar
+    <v-app-bar
         app
-        shrink-on-scroll
     >
-      <CreateRoom />
-    </v-app-bar> -->
+      安心夜道
+    </v-app-bar>
   <v-main>
-  <v-form v-model="valid">
     <v-container>
       <v-row class="display:flex">
         <div>
-        <div class="d-block pa-2">
-          <p>1.緊急連絡先を入力してください</p>
-            <v-text-field
-              v-model='phoneNumber'
-              label='電話番号を入力してください'
-              required
-            ></v-text-field>
-        </div>
- 
-        <div class="d-block pa-2">
-          <p>2.あなたの名前を入力してください</p>
-            <v-text-field
-              v-model='name'
-              label='名前を入力してください'
-              required
-            ></v-text-field>
-        </div>
-        
-        <div class="d-block pa-2">
+        <v-col>
+          <div class="d-block pa-2">
+            <p>1.緊急連絡先を入力してください</p>
+              <v-text-field
+                v-model='phoneNumber'
+                label='電話番号を入力してください'
+                required
+                prepend-icon="mdi-phone"
+                clearable
+              ></v-text-field>
+          </div>
+        </v-col>
+        <v-col>
+          <div class="d-block pa-2">
+            <p>2.あなたの名前を入力してください</p>
+              <v-text-field
+                v-model='name'
+                label='名前を入力してください'
+                required
+                prepend-icon="mdi-account"
+                clearable
+              ></v-text-field>
+          </div>
+        </v-col>
+        <v-col>
+          <div class="d-block pa-2">
           <p>3.位置情報の取得を許可してください</p>
-          <template>
-            <div>
               <v-btn
                 class="ma-2"
-                :loading="loading"
-                :disabled="loading"
                 color="secondary"
                 @click="getLocation"
               >
                 位置情報を取得する
               </v-btn>
-              <p>{{ latitude }}</p>
-              <p>{{ longitude }}</p>
-
-            </div>
-          </template>
         </div>
           <div class="p-map">
             <iframe
@@ -60,24 +55,24 @@
             >
             </iframe>
           </div>
+        </v-col>
+        <v-col>
+          <div class="d-block pa-2">
+            <p>4.フェイク通話を開始するボタンを押してください</p>
+              <div class="text-center">
+                <v-btn
+                  class="ma-2"
+                  color="secondary"
+                  @click="saveData"
+                >
+                  フェイク通話を開始する
+                </v-btn>
+              </div>
           </div>
-        <div class="d-block pa-2">
-          <p>4.フェイク通話を開始するボタンを押してください</p>
-            <div class="text-center">
-              <v-btn
-                class="ma-2"
-                :loading="loading"
-                :disabled="loading"
-                color="secondary"
-                @click="saveData"
-              >
-                フェイク通話を開始する
-              </v-btn>
-            </div>
-        </div>
+        </v-col>
+          </div>
       </v-row>
     </v-container>
-  </v-form>
 </v-main>
   </v-app>
 </template>
