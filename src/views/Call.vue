@@ -1,39 +1,100 @@
 <template>
   <v-app>
-    <div>
-      <div>
-      <p>応答</p>
-      <v-btn 
-          class="mx-2"
-          fab
-          dark
-          large
-          color="cyan"
-          @click="recognizeVoice"
-          v-if="flagOnCall"
-      >
-        <v-icon dark>
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>終了</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="pink"
-          @click="offCall"
-          v-if="flagOnCall"
-      >
-        <v-icon dark>
-          mdi-phone-hangup
-        </v-icon>
-      </v-btn>
-    </div>
-  </div>
+    <v-container>
+      <div class="d-flex justify-space-around mb-16">
+        <h1>山田 太郎</h1>
+        <v-avatar
+          color="grey"
+          size="50"
+        >
+          <v-icon
+            dark
+            size="45"
+          >
+            mdi-account-circle
+          </v-icon>
+        </v-avatar>
+      </div>
+      <div class="d-flex justify-space-around mb-6">
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              x-large
+          >
+            <v-icon color="grey">
+              mdi-bell-ring
+            </v-icon>
+          </v-btn>
+          <p>リマインド</p>
+        </div>
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              x-large
+          >
+            <v-icon color="grey">
+              mdi-radiobox-marked
+            </v-icon>
+          </v-btn>
+          <p>録音</p>
+        </div>
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              x-large
+          >
+            <v-icon color="grey">
+              mdi-message-text
+            </v-icon>
+          </v-btn>
+          <p>メッセージ</p>
+        </div>
+      </div>
+      <div class="d-flex justify-space-around mb-6">
+        <div>
+          <v-btn
+              class="mx-2"
+              fab
+              dark
+              large
+              color="pink"
+              @click="offCall"
+              v-if="flagOnCall"
+          >
+            <v-icon dark>
+              mdi-phone-hangup
+            </v-icon>
+          </v-btn>
+          <p>終了</p>
+        </div>
+        <div></div>
+        <div>
+          <v-btn
+              class="mx-2"
+              fab
+              dark
+              large
+              color="green"
+              @click="recognizeVoice"
+              v-if="flagOnCall"
+          >
+            <v-icon dark>
+              mdi-phone
+            </v-icon>
+          </v-btn>
+          <p>応答</p>
+        </div>
+      </div>
+    </v-container>
   </v-app>
 </template>
 
@@ -75,7 +136,7 @@ export default {
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
-      setTimeout(this.emergencyCall,300)
+      // setTimeout(this.emergencyCall,300)
     },
     onCall:function() {
       this.flagOnCall = false
