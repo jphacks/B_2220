@@ -48,6 +48,17 @@
 
 <script>
 export default {
-
+  methods : {
+    createTitleDesc : function(routeInstance){
+      //titleを設定する処理
+      if(routeInstance.meta.title){
+          // var setTitle = routeInstance.meta.title + ' | サイト名など(任意)';
+          var setTitle = routeInstance.meta.title;
+          document.title = setTitle;
+      } else {
+          document.title = 'あんしん夜道';
+      }
+    }
+  }
 }
 </script>

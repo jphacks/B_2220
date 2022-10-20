@@ -1,7 +1,12 @@
 <template>
   <v-app>
+    <v-app-bar
+        app
+    >
+      安心夜道
+    </v-app-bar>
     <v-container>
-      <div class="d-flex justify-space-around mb-16">
+      <div class="d-flex justify-space-around my-16">
         <h1>山田 太郎</h1>
         <v-avatar
           color="grey"

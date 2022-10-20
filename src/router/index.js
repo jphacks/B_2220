@@ -17,6 +17,7 @@ const routes = [
         name: 'RoomList',
         component: RoomList,
         // meta: {requiresAuth: false}
+        meta: { title: 'あんしん夜道', desc: '「あんしん夜道」は、”不安な夜道に、少しの安心を”をコンセプトとした、暗く危ない夜道で電話をしているフリができるアプリケーションである。名前・電話番号・位置情報を入力し、発信ボタンを押すと自動的に成人男性に近い声色の自動音声が流れてきて、いかにも第三者と会話をしているように演出することができる。' }
     },
     {
         path: '/about',
@@ -44,7 +45,8 @@ const routes = [
     {
         path: '/call',
         name: 'Call',
-        component: Call
+        component: Call,
+        meta: { title: '着信', desc: 'フェイクの着信画面' }
     },
 
 ]
