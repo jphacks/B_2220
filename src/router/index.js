@@ -64,6 +64,12 @@ audio2.play();
 const audio3 = new Audio('call03.wav');
 audio3.play();
 
+const audio4 = new Audio('call04.wav');
+audio4.play();
+
+const audio5 = new Audio('call05.wav');
+audio5.play();
+
 // router.beforeEach((to, from, next) => {
 //     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 //     if (requiresAuth) {
