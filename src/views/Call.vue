@@ -33,8 +33,6 @@
         </v-icon>
       </v-btn>
     </div>
-    <p>{{ messagea }}</p>
-    <p>{{ messagem }}</p>
   </div>
   </v-app>
 </template>
@@ -52,6 +50,8 @@ export default {
     audio: new Audio(require('@/assets/voice/call01.mp3')),
     audio2: new Audio(require('@/assets/voice/call02.wav')),
     audio3: new Audio(require('@/assets/voice/call03.wav')),
+    audio4: new Audio(require('@/assets/voice/call04.wav')),
+    audio5: new Audio(require('@/assets/voice/call05.wav')),
   }),
   mounted() {
     // var config = {
@@ -144,13 +144,13 @@ export default {
       this.startAiVoice()
       setTimeout(this.useMicrophone, 10000)
     },
+    // マイクの使用設定
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      this.makeMessagem();
       recognition.onresult = (event) => {
         if( 0 < event.results.length ){
-          alert(event.results[0][0].transcript);
+          console.log(event.results[0][0].transcript);
           this.repeatAiVoice();
           setTimeout(this.useMicrophone, 10000)
         }
@@ -170,24 +170,24 @@ export default {
     },
     startAiVoice: function() {
       this.offCall();
-      this.makeMessagea();
       setTimeout(this.playAiVoice, 3000)
     },
     repeatAiVoice: function() {
-      this.makeMessagea();
-      setTimeout(this.playAiVoice, 300)
+      setTimeout(this.playRandAiVoice, 3000)
     },
     playAiVoice:function () {
       this.audio.play()
     },
-    makeMessagem:function () {
-      return{
-        messagem : '音声認識を開始します。'
-      }
-    },
-    makeMessagea:function () {
-      return{
-        messagea : 'AI音声を再生します。'
+    playRandAiVoice:function () {
+      const rand = Math.floor(Math.random() * 4);
+      if (rand === 0) {
+        this.audio2.play()
+      } else if (rand === 1) {
+        this.audio3.play()
+      } else if (rand === 2) {
+        this.audio4.play()
+      } else {
+        this.audio5.play()
       }
     }
   }
