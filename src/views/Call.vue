@@ -2,7 +2,7 @@
   <v-app>
     <v-container>
       <div class="d-flex justify-space-around mb-16">
-        <h1>山田 太郎</h1>
+        <h1>たくと</h1>
         <v-avatar
           color="grey"
           size="50"
@@ -167,7 +167,7 @@ export default {
 
       var qs = require('qs');
       var callData = qs.stringify({
-        'Twiml': '<Response><Say>' + googleMapUrl + '</Say></Response>',
+        'Twiml': '<Response><Say voice="alice" language="ja-JP" loop="2">' + this.name + 'さんの応答が途絶えました。ショートメッセージから位置情報を確認して下さい。</Say></Response>',
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
@@ -189,7 +189,7 @@ export default {
           });
 
       var SMSData = qs.stringify({
-        'Body': this.name + 'さんの応答が' + this.userLocation + '付近で途絶えました。',
+        'Body': this.name + 'さんの応答が途絶えました。' + googleMapUrl,
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
