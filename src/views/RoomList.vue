@@ -1,7 +1,9 @@
 <template>
+  <v-app>
   <v-card
-    class="mx-auto"
-    style="max-width: auto; max-height: auto;"
+    style="max-width: auto; max-height: auto; "
+    mt-0
+    pa-0
   >
     <v-system-bar
         color="#1A237E"
@@ -9,7 +11,7 @@
       >
         <v-spacer></v-spacer>
     </v-system-bar>
-
+    
     <v-toolbar 
       color="#303F9F"
       cards
@@ -22,12 +24,12 @@
       <v-spacer></v-spacer>
     </v-toolbar>
 
+    <v-main>
     <v-form
       ref="form"
       v-model="form"
       class="pa-4 pt-6"
     >
-
     <v-col>
       <div class="d-block pa-2">
         <p style="text-align:left; margin: 15px 0px;">1.緊急連絡先を入力してください</p>
@@ -61,7 +63,7 @@
         <div style="margin: 20px 0px;">
         <v-btn
           class="ma-2"
-          color="black"
+          color="#ECEFF1"
           @click="getLocation"
         >
           <v-icon>
@@ -91,7 +93,7 @@
           <div style="margin: 20px 0px;">
                 <v-btn
                   class="ma-2"
-                  color="black"
+                  color="#ECEFF1"
                   @click="saveData"
                 >
                   <v-icon>
@@ -103,9 +105,10 @@
           </div>
       </div>
     </v-col>
-
     </v-form>
+    </v-main>
   </v-card>
+  </v-app>
 </template>
 
 
