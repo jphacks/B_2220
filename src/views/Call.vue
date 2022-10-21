@@ -94,6 +94,9 @@
           <p>応答</p>
         </div>
       </div>
+      <div class="message" v-if="message">
+        <p> {{ message }} </p>
+      </div>
     </v-container>
   </v-app>
 </template>
@@ -101,6 +104,7 @@
 
 <script>
 import axios from 'axios';
+// import Vue from 'vue';
 export default {
   name: "call",
   data: () => ({
@@ -113,6 +117,7 @@ export default {
     audio3: new Audio(require('@/assets/voice/call03.wav')),
     audio4: new Audio(require('@/assets/voice/call04.wav')),
     audio5: new Audio(require('@/assets/voice/call05.wav')),
+    message: '',
   }),
   mounted() {
     // var config = {
@@ -209,6 +214,7 @@ export default {
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
+      this.message = '音声認識中'
       recognition.onresult = (event) => {
         if( 0 < event.results.length ){
           console.log(event.results[0][0].transcript);
@@ -235,9 +241,11 @@ export default {
     startAiVoice: function() {
       this.offCall();
       setTimeout(this.playAiVoice, 3000)
+      this.message = 'AI応答中'
     },
     repeatAiVoice: function() {
       setTimeout(this.playRandAiVoice, 3000)
+      this.message = 'AI応答中'
     },
     playAiVoice:function () {
       this.audio.play()
