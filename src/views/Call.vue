@@ -218,7 +218,7 @@ export default {
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      this.message = '音声認識中'
+      recognition.continuous = false; // 単一的な結果のみをキャプチャする
       recognition.onresult = (event) => {
         if( 0 < event.results.length ){
           console.log(event.results[0][0].transcript);
@@ -230,17 +230,21 @@ export default {
         }
       };
       recognition.onnomatch = function(){
-        alert('音声が認識できませんでした。');
+        this.message = '緊急連絡を行います１'
+        console.log('音声が認識できませんでした。');
         this.emergencyCall();
       };
       recognition.onerror= function(){
+        this.message = '緊急連絡を行います2'
         console.log('音声認識エラーが発生しました。');
         this.emergencyCall();
       };
       recognition.onsoundend = function(){
+        this.message = '音声認識終了'
         console.log('音声検出終了');
       };
       recognition.start();
+      this.message = '音声認識中'
     },
     startAiVoice: function() {
       this.offCall();
