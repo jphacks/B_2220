@@ -1,47 +1,110 @@
 <template>
   <v-app>
-    <div>
-      <div>
-      <p>応答</p>
-      <v-btn 
-          class="mx-2"
-          fab
-          dark
-          large
-          color="cyan"
-          @click="recognizeVoice"
-          v-if="flagOnCall"
-      >
-        <v-icon dark>
-        </v-icon>
-      </v-btn>
-    </div>
-    <div> 
-      <p>終了</p>
-      <p>{{ name }}</p>
-      <v-btn
-          class="mx-2"
-          fab
-          dark
-          large
-          color="pink"
-          @click="offCall"
-          v-if="flagOnCall"
-      >
-        <v-icon dark>
-          mdi-phone-hangup
-        </v-icon>
-      </v-btn>
-    </div>
-    <p>{{ messagea }}</p>
-    <p>{{ messagem }}</p>
-  </div>
+    <v-container>
+      <div class="d-flex justify-space-around mb-16">
+        <h1>山田 太郎</h1>
+        <v-avatar
+          color="grey"
+          size="50"
+        >
+          <v-icon
+            dark
+            size="45"
+          >
+            mdi-account-circle
+          </v-icon>
+        </v-avatar>
+      </div>
+      <div class="d-flex justify-space-around mb-6">
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              x-large
+          >
+            <v-icon color="grey">
+              mdi-bell-ring
+            </v-icon>
+          </v-btn>
+          <p>リマインド</p>
+        </div>
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              x-large
+          >
+            <v-icon color="grey">
+              mdi-radiobox-marked
+            </v-icon>
+          </v-btn>
+          <p>録音</p>
+        </div>
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              x-large
+          >
+            <v-icon color="grey">
+              mdi-message-text
+            </v-icon>
+          </v-btn>
+          <p>メッセージ</p>
+        </div>
+      </div>
+      <div class="d-flex justify-space-around mb-6">
+        <div>
+          <v-btn
+              class="mx-2"
+              fab
+              dark
+              large
+              color="pink"
+              @click="offCall"
+              v-if="flagOnCall"
+          >
+            <v-icon dark>
+              mdi-phone-hangup
+            </v-icon>
+          </v-btn>
+          <p>終了</p>
+        </div>
+        <div></div>
+        <div>
+          <v-btn
+              class="mx-2"
+              fab
+              dark
+              large
+              color="green"
+              @click="recognizeVoice"
+              v-if="flagOnCall"
+          >
+            <v-icon dark>
+              mdi-phone
+            </v-icon>
+          </v-btn>
+          <p>応答</p>
+        </div>
+      </div>
+      <div class="message" v-if="message">
+        <p> {{ message }} </p>
+      </div>
+    </v-container>
   </v-app>
 </template>
 
 
 <script>
 import axios from 'axios';
+// import Vue from 'vue';
 export default {
   name: "call",
   data: () => ({
@@ -53,6 +116,9 @@ export default {
     audio2: new Audio(require('@/assets/voice/call02.wav')),
     audio3: new Audio(require('@/assets/voice/call03.wav')),
     userLocation: null,
+    audio4: new Audio(require('@/assets/voice/call04.wav')),
+    audio5: new Audio(require('@/assets/voice/call05.wav')),
+    message: '',
   }),
   mounted() {
     const {Client} = require("@googlemaps/google-maps-services-js");
@@ -80,7 +146,7 @@ export default {
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
-      setTimeout(this.emergencyCall,300)
+      // setTimeout(this.emergencyCall,300)
     },
     onCall:function() {
       this.flagOnCall = false
@@ -148,15 +214,19 @@ export default {
       this.startAiVoice()
       setTimeout(this.useMicrophone, 10000)
     },
+    // マイクの使用設定
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      this.makeMessagem();
+      this.message = '音声認識中'
       recognition.onresult = (event) => {
         if( 0 < event.results.length ){
-          alert(event.results[0][0].transcript);
+          console.log(event.results[0][0].transcript);
           this.repeatAiVoice();
           setTimeout(this.useMicrophone, 10000)
+        }else if(event.results.length == 0){
+          console.log("認識した音声はありません。");
+          this.emergencyCall();
         }
       };
       recognition.onnomatch = function(){
@@ -167,31 +237,33 @@ export default {
         console.log('音声認識エラーが発生しました。');
         this.emergencyCall();
       };
-      // recognition.onsoundend = function(){
-      //   console.log('音声検出終了');
-      // };
+      recognition.onsoundend = function(){
+        console.log('音声検出終了');
+      };
       recognition.start();
     },
     startAiVoice: function() {
       this.offCall();
-      this.makeMessagea();
       setTimeout(this.playAiVoice, 3000)
+      this.message = 'AI応答中'
     },
     repeatAiVoice: function() {
-      this.makeMessagea();
-      setTimeout(this.playAiVoice, 300)
+      setTimeout(this.playRandAiVoice, 3000)
+      this.message = 'AI応答中'
     },
     playAiVoice:function () {
       this.audio.play()
     },
-    makeMessagem:function () {
-      return{
-        messagem : '音声認識を開始します。'
-      }
-    },
-    makeMessagea:function () {
-      return{
-        messagea : 'AI音声を再生します。'
+    playRandAiVoice:function () {
+      const rand = Math.floor(Math.random() * 4);
+      if (rand === 0) {
+        this.audio2.play()
+      } else if (rand === 1) {
+        this.audio3.play()
+      } else if (rand === 2) {
+        this.audio4.play()
+      } else {
+        this.audio5.play()
       }
     }
   }
