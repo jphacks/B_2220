@@ -141,6 +141,7 @@ export default {
           console.log(e.response.data.error_message);
         });
     setTimeout(this.ringTone, 3000)
+    // this.emergencyCall();
   },
   methods: {
     ringTone:function() {
@@ -155,6 +156,7 @@ export default {
     offCall:function() {
       this.flagOnCall = true
       this.ringtone.pause()
+      this.$router.push('/');
     },
     emergencyCall:function() {
       const accountSid = process.env.VUE_APP_ACCOUNT_SID;
@@ -178,7 +180,6 @@ export default {
         },
         data : callData
       };
-
       axios(callConfig)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
@@ -201,7 +202,6 @@ export default {
         },
         data : SMSData
       };
-
       axios(SMSConfig)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
@@ -210,15 +210,12 @@ export default {
             console.log(error);
           });
     },
-    recognizeVoice:function(){
-      this.startAiVoice()
-      setTimeout(this.useMicrophone, 10000)
-    },
     // マイクの使用設定
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
-      recognition.continuous = false; // 単一的な結果のみをキャプチャする
+      const makeEmergencyCall = this.emergencyCall;
+      this.message = '音声認識中'
       recognition.onresult = (event) => {
         if( 0 < event.results.length ){
           console.log(event.results[0][0].transcript);
@@ -226,28 +223,27 @@ export default {
           setTimeout(this.useMicrophone, 10000)
         }else if(event.results.length == 0){
           console.log("認識した音声はありません。");
-          this.emergencyCall();
         }
       };
       recognition.onnomatch = function(){
-        this.message = '緊急連絡を行います１'
         console.log('音声が認識できませんでした。');
-        this.emergencyCall();
+        makeEmergencyCall();
       };
       recognition.onerror= function(){
-        this.message = '緊急連絡を行います2'
         console.log('音声認識エラーが発生しました。');
-        this.emergencyCall();
+        makeEmergencyCall();
       };
       recognition.onsoundend = function(){
-        this.message = '音声認識終了'
         console.log('音声検出終了');
       };
       recognition.start();
-      this.message = '音声認識中'
     },
+    recognizeVoice:function(){
+       this.startAiVoice()
+        setTimeout(this.useMicrophone, 10000)
+     },
     startAiVoice: function() {
-      this.offCall();
+      this.ringtone.pause()
       setTimeout(this.playAiVoice, 3000)
       this.message = 'AI応答中'
     },
