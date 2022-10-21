@@ -1,71 +1,97 @@
 <template>
-  <v-app id="inspire">
-    <v-app-bar
-        app
+  <v-card
+    class="mx-auto"
+    style="max-width: auto; max-height: auto;"
+  >
+    <v-system-bar
+        color="#1A237E"
+        dark
+      >
+        <v-spacer></v-spacer>
+    </v-system-bar>
+
+    <v-toolbar 
+      color="#303F9F"
+      cards
+      dark
+      flat
     >
-      安心夜道
-    </v-app-bar>
-  <v-main>
-    <v-container>
-      <v-row class="display:flex">
+      <v-card-title class="text-h6 font-weight-regular">
+        あんしん夜道
+      </v-card-title>
+      <v-spacer></v-spacer>
+    </v-toolbar>
+
+    <v-form
+      ref="form"
+      v-model="form"
+      class="pa-4 pt-6"
+    >
+
+    <v-col>
+      <div class="d-block pa-2">
+        <p style="text-align:left; margin: 15px 0px;">1.緊急連絡先を入力してください</p>
+        <p style="text-align:left; font-size: 70%;"> ※ハイフンなし・半角数字で入力してください。</p>
+        <v-text-field
+            v-model='phoneNumber'
+            filled
+            prepend-inner-icon="mdi-phone"
+            label="電話番号"
+            clearable
+          ></v-text-field>
+      </div>
+    </v-col>
+    <v-col>
+      <div class="d-block pa-2">
+        <p style="text-align:left; margin: 15px 0px;">2.あなたの名前を入力してください</p>
+        <v-text-field
+          v-model='name'
+          filled
+          required
+          prepend-inner-icon="mdi-account"
+          label="名前"
+          clearable
+        ></v-text-field>
+      </div>
+    </v-col>
+    <v-col>
+      <div class="d-block pa-2">
+        <p style="text-align:left; margin: 20px 0px;">3.位置情報の取得を許可してください</p>
         <div>
-        <v-col>
-          <div class="d-block pa-2">
-            <p><b>1.緊急連絡先を入力してください</b></p>
-              <v-text-field
-                v-model='phoneNumber'
-                label='電話番号を入力してください'
-                required
-                prepend-icon="mdi-phone"
-                clearable
-              ></v-text-field>
-          </div>
-        </v-col>
-        <v-col>
-          <div class="d-block pa-2">
-            <p><b>2.あなたの名前を入力してください</b></p>
-              <v-text-field
-                v-model='name'
-                label='名前を入力してください'
-                required
-                prepend-icon="mdi-account"
-                clearable
-              ></v-text-field>
-          </div>
-        </v-col>
-        <v-col>
-          <div class="d-block pa-2">
-          <p><b>3.位置情報の取得を許可してください</b></p>
-              <v-btn
-                class="ma-2"
-                color="secondary"
-                @click="getLocation"
-              >
-                <v-icon>
-                  mdi-map-marker
-                </v-icon>
-                位置情報を取得する
-              </v-btn>
+        <div style="margin: 20px 0px;">
+        <v-btn
+          class="ma-2"
+          color="black"
+          @click="getLocation"
+        >
+          <v-icon>
+            mdi-map-marker
+          </v-icon>
+          位置情報を取得する
+        </v-btn>
         </div>
-          <div class="p-map">
+        <div class="p-map">
             <iframe
               :src="this.mapRequestUrl"
-              width="100%"
-              height="auto"
+              width="30px"
+              height="30px"
               frameborder="0"
               style="border:0"
               allowfullscreen
             >
             </iframe>
-          </div>
-        </v-col>
-        <v-col>
-          <div class="d-block pa-2">
-            <p><b>4.フェイク通話を開始するボタンを押してください</b></p>
-              <div class="text-center">
+        </div>
+        </div>
+    </div>
+    </v-col>
+    <v-col>
+      <div class="d-block pa-2">
+        <p style="text-align:left; margin: 20px 0px;;">4.フェイク通話を開始するボタンを押してください</p>
+        <div class="text-center">
+          <div style="margin: 20px 0px;">
                 <v-btn
                   class="ma-2"
-                  color="secondary"
+                  color="black"
                   @click="saveData"
                 >
                   <v-icon>
@@ -73,15 +99,15 @@
                   </v-icon>
                   フェイク通話を開始する
                 </v-btn>
-              </div>
+            </div>
           </div>
-        </v-col>
-          </div>
-      </v-row>
-    </v-container>
-</v-main>
-  </v-app>
+      </div>
+    </v-col>
+
+    </v-form>
+  </v-card>
 </template>
+
 
 <script>
 // import Sidebar from '@/components/layouts/Sidebar'
