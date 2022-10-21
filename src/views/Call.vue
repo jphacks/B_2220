@@ -52,23 +52,28 @@ export default {
     audio: new Audio(require('@/assets/voice/call01.mp3')),
     audio2: new Audio(require('@/assets/voice/call02.wav')),
     audio3: new Audio(require('@/assets/voice/call03.wav')),
+    userLocation: null,
   }),
   mounted() {
-    // var config = {
-    //   method: 'searchByGeolocation',
-    //   url: 'http://geoapi.heartrails.com/api/json?method=searchByGeoLocation',
-    //   data: {
-    //     x: 35.6797777,
-    //     y: 139.77165
-    //   }
-    // };
-    // axios(config)
-    //     .then(function (response) {
-    //       console.log(JSON.stringify(response.data));
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
+    const {Client} = require("@googlemaps/google-maps-services-js");
+    const client = new Client({});
+    client
+        .reverseGeocode({
+          headers:{
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          params: {
+            latlng: [sessionStorage.getItem('latitude'), sessionStorage.getItem('longitude')],
+            key: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
+          },
+          timeout: 1000, // milliseconds
+        })
+        .then((r) => {
+          console.log(this.userLocation = r.data.results[0].formatted_address);
+        })
+        .catch((e) => {
+          console.log(e.response.data.error_message);
+        });
     setTimeout(this.ringTone, 3000)
   },
   methods: {
@@ -116,9 +121,8 @@ export default {
             console.log(error);
           });
 
-
       var SMSData = qs.stringify({
-        'Body': this.name + 'さんの応答が' + '途絶えました。',
+        'Body': this.name + 'さんの応答が' + this.userLocation + '付近で途絶えました。',
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
