@@ -210,7 +210,7 @@ export default {
     saveData: function() { // sessionStorageへ保存する
       sessionStorage.setItem('name', this.name); 
       sessionStorage.setItem('phoneNumber', this.phoneNumber); 
-      sessionStorage.setItem('googleMapUrl', 'https://maps.google.co.jp/maps?ll=' + this.latitude + ',' + this.longitude);
+      sessionStorage.setItem('googleMapUrl', 'https://www.google.com/maps/search/' + this.latitude + ',' + this.longitude);
       sessionStorage.setItem('latitude',this.latitude);
       sessionStorage.setItem('longitude',this.longitude);
       this.$router.push('/Call');
