@@ -5,20 +5,15 @@
     mt-0
     pa-0
   >
-    <v-system-bar
-        color="#1A237E"
-        dark
-      >
-        <v-spacer></v-spacer>
-    </v-system-bar>
+
     
-    <v-toolbar 
-      color="#303F9F"
+    <v-toolbar
+      class="bar-gra"
       cards
       dark
       flat
     >
-      <v-card-title class="text-h6 font-weight-regular">
+      <v-card-title class="text-h6 font-weight-bold">
         あんしん夜道
       </v-card-title>
       <v-spacer></v-spacer>
@@ -210,7 +205,7 @@ export default {
     saveData: function() { // sessionStorageへ保存する
       sessionStorage.setItem('name', this.name); 
       sessionStorage.setItem('phoneNumber', this.phoneNumber); 
-      sessionStorage.setItem('googleMapUrl', 'https://maps.google.co.jp/maps?ll=' + this.latitude + ',' + this.longitude);
+      sessionStorage.setItem('googleMapUrl', 'https://www.google.com/maps/search/' + this.latitude + ',' + this.longitude);
       sessionStorage.setItem('latitude',this.latitude);
       sessionStorage.setItem('longitude',this.longitude);
       this.$router.push('/Call');
@@ -232,5 +227,8 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+}
+.bar-gra{
+  background-image: linear-gradient(45deg, #303F9F, #d36950);
 }
 </style>
