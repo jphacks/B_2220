@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-container>
-      <div class="d-flex justify-space-around mb-16">
-        <h1>たくと</h1>
+    <v-container class="bg-image">
+      <div class="d-flex justify-space-around mb-16 mt-16">
+        <h1 class="white--text">たくと</h1>
         <v-avatar
           color="grey"
           size="50"
@@ -15,20 +15,21 @@
           </v-icon>
         </v-avatar>
       </div>
-      <div class="d-flex justify-space-around mb-6">
+      <div class="d-flex justify-space-around mb-6 pt-16">
         <div>
           <v-btn
               elevation="0"
               class="mx-2"
               color="white"
               fab
+              outlined
               x-large
           >
-            <v-icon color="grey">
+            <v-icon color="white">
               mdi-bell-ring
             </v-icon>
           </v-btn>
-          <p>リマインド</p>
+          <p class="white--text font-weight-bold mt-2">リマインド</p>
         </div>
         <div>
           <v-btn
@@ -36,13 +37,14 @@
               class="mx-2"
               color="white"
               fab
+              outlined
               x-large
           >
-            <v-icon color="grey">
+            <v-icon color="white">
               mdi-radiobox-marked
             </v-icon>
           </v-btn>
-          <p>録音</p>
+          <p class="white--text font-weight-bold mt-2">録音</p>
         </div>
         <div>
           <v-btn
@@ -50,13 +52,14 @@
               class="mx-2"
               color="white"
               fab
+              outlined
               x-large
           >
-            <v-icon color="grey">
+            <v-icon color="white">
               mdi-message-text
             </v-icon>
           </v-btn>
-          <p>メッセージ</p>
+          <p class="white--text font-weight-bold mt-2">メッセージ</p>
         </div>
       </div>
       <div class="d-flex justify-space-around mb-6">
@@ -74,7 +77,7 @@
               mdi-phone-hangup
             </v-icon>
           </v-btn>
-          <p>終了</p>
+          <p class="white--text font-weight-bold mt-2">終了</p>
         </div>
         <div></div>
         <div>
@@ -91,7 +94,7 @@
               mdi-phone
             </v-icon>
           </v-btn>
-          <p>応答</p>
+          <p class="white--text font-weight-bold mt-2">応答</p>
         </div>
       </div>
       <div class="message" v-if="message">
@@ -240,7 +243,7 @@ export default {
     },
     recognizeVoice:function(){
        this.startAiVoice()
-        setTimeout(this.useMicrophone, 10000)
+      setTimeout(this.useMicrophone, 10000)
      },
     startAiVoice: function() {
       this.ringtone.pause()
@@ -271,5 +274,11 @@ export default {
 </script>
 
 <style scoped>
+.bg-image{
+  background-image: url("../assets/call_bg_1_blur.jpeg");
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+}
 
 </style>
