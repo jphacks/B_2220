@@ -19,6 +19,10 @@ https://b-2220.onrender.com
 
 ![b2220 - Frame 4](https://user-images.githubusercontent.com/24710953/196140549-7691f13e-495f-490d-8506-c3e96b625011.jpg)
 
+## 使い方(デモ動画)
+[![IMAGE ALT TEXT HERE](https://user-images.githubusercontent.com/24710953/197316618-c7c44cbb-c640-45c1-9958-4582c970fe55.png)](https://youtu.be/qfS-SFLeszY)
+
+
 ## ▶️ 製品概要
 ### ● 背景(製品開発のきっかけ、課題等）
 ![b2220 - Frame 1](https://user-images.githubusercontent.com/24710953/196140697-24db1d42-18b5-4725-a255-21739ab2974e.jpg)
