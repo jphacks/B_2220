@@ -7,13 +7,14 @@ import ChatBoard from '../views/ChatBoard.vue'
 import Login from '../views/Login.vue'
 import SingUp from '../views/SignUp.vue'
 import Call from '../views/Call.vue'
+import First from '../views/First.vue'
 // import firebase from "@/firebase/firebase"
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/',
+        path: '/setting',
         name: 'RoomList',
         component: RoomList,
         // meta: {requiresAuth: false}
@@ -46,6 +47,11 @@ const routes = [
         name: 'Call',
         component: Call
     },
+    {
+        path: '/',
+        name: 'First',
+        component: First
+    }
 
 ]
 
