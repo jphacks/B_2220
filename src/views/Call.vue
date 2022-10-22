@@ -39,12 +39,13 @@
               fab
               outlined
               x-large
+              @click="emergencyCall"
           >
             <v-icon color="white">
-              mdi-radiobox-marked
+              mdi-car-emergency
             </v-icon>
           </v-btn>
-          <p class="white--text font-weight-bold mt-2">録音</p>
+          <p class="white--text font-weight-bold mt-2">緊急通報</p>
         </div>
         <div>
           <v-btn
