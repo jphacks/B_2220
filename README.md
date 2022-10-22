@@ -83,14 +83,11 @@ https://b-2220.onrender.com
 #### API・データ
 * Twilion API
 * Google Map API
+* Web speech API
 
 #### フレームワーク・ライブラリ・モジュール
-* 
-* 
-
-#### デバイス
-* 
-* 
+* Vue.js
+* Twilio
 
 ### ● 独自技術
 #### ハッカソンで開発した独自機能・技術
