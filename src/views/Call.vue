@@ -240,7 +240,7 @@ export default {
     },
     recognizeVoice:function(){
        this.startAiVoice()
-        setTimeout(this.useMicrophone, 10000)
+      setTimeout(this.useMicrophone, 10000)
      },
     startAiVoice: function() {
       this.ringtone.pause()
