@@ -99,7 +99,7 @@
         </div>
       </div>
       <div class="message" v-if="message">
-        <p> {{ message }} </p>
+        <p class="white--text"> {{ message }} </p>
       </div>
     </v-container>
   </v-app>
@@ -160,7 +160,7 @@ export default {
     offCall:function() {
       this.flagOnCall = true
       this.ringtone.pause()
-      this.$router.push('/');
+      this.$router.push('/setting');
     },
     emergencyCall:function() {
       const accountSid = process.env.VUE_APP_ACCOUNT_SID;
