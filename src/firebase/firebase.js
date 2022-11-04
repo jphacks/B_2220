@@ -1,13 +1,14 @@
 import firebase from 'firebase';
 
-var firebaseConfig = {
-  apiKey: process.env.VUE_APP_API_KEY,
-  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
-  projectId:  process.env.VUE_APP_PROJECT_ID,
-  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
-  appId:  process.env.VUE_APP_APP_ID,
+const firebaseConfig = {
+  apiKey: "AIzaSyAg4G6k_v_vTPqU-KKlSsUapEmAGALf1kY",
+  authDomain: "cool-snowfall-365911.firebaseapp.com",
+  projectId: "cool-snowfall-365911",
+  storageBucket: "cool-snowfall-365911.appspot.com",
+  messagingSenderId: "594282392358",
+  appId: "1:594282392358:web:c606d35be3e374f1322fe7"
 };
+console.log(firebaseConfig);
 
 
 // Initialize Firebase
