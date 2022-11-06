@@ -14,14 +14,14 @@
           <v-text-field
               v-model="email"
               :rules="emailRules"
-              label="E-mail"
+              label="メールアドレス"
               required
           ></v-text-field>
 
           <v-text-field
               v-model="password"
               label="Password"
-              type="password">
+              type="パスワード">
 
           </v-text-field>
 
@@ -124,7 +124,7 @@ export default {
 
             sessionStorage.setItem('user', JSON.stringify(auth))
 
-            this.$router.push('/')
+            this.$router.push('/home')
           })
           .catch((error) => {
             console.log("fail", error)
