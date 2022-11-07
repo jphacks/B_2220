@@ -28,7 +28,6 @@
               v-model="password"
               label="Password"
               type="パスワード">
-
           </v-text-field>
 
           <v-text-field
@@ -37,8 +36,9 @@
               label="緊急連絡先"
               required
               type="Emergency Call Number">
-
           </v-text-field>
+
+          
 
           <v-btn
               color="success"

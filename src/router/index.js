@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
+import Home from '../views/Home.vue'
 // import UserList from '../views/UserList.vue'
 import RoomList from '../views/RoomList.vue'
 import ChatBoard from '../views/ChatBoard.vue'
 import Login from '../views/Login.vue'
 import SingUp from '../views/SignUp.vue'
 import Call from '../views/Call.vue'
+import Buzzer from '../views/Buzzer.vue'
 import First from '../views/First.vue'
 import firebase from "@/firebase/firebase"
 
@@ -33,6 +34,11 @@ const routes = [
         component: ChatBoard
     },
     {
+        path: '/home',
+        name: 'Home',
+        component: Home
+    },
+    {
         path: '/login',
         name: 'Login',
         component: Login
@@ -51,6 +57,11 @@ const routes = [
         path: '/roomlist',
         name: 'RoomList',
         component: RoomList
+    },
+    {
+        path: '/buzzer',
+        name: 'Buzzer',
+        component: Buzzer
     },
     {
         path: '/',

@@ -24,12 +24,13 @@
               fab
               outlined
               x-large
+              @click="buzzerStart"
           >
             <v-icon color="white">
               mdi-bell-ring
             </v-icon>
           </v-btn>
-          <p class="white--text font-weight-bold mt-2">リマインド</p>
+          <p class="white--text font-weight-bold mt-2">防犯ブザー</p>
         </div>
         <div>
           <v-btn
@@ -114,6 +115,7 @@ export default {
   data: () => ({
     flagOnCall: true,
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
+    buzzer: new Audio(require('@/assets/buzzer/buzzer.mp3')),
     name: sessionStorage.getItem('name'),
     // voice: new Audio(require('@/assets/voice/voice1.wav')),
     audio: new Audio(require('@/assets/voice/call01.mp3')),
@@ -148,6 +150,13 @@ export default {
     // this.emergencyCall();
   },
   methods: {
+    buzzerStart(){
+      this.buzzer.currentTime = 0 // 連続で鳴らせるように
+      this.buzzer.play()
+    },
+    buzzerStop(){
+      this.buzzer.pause()
+    },
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
@@ -160,6 +169,7 @@ export default {
     offCall:function() {
       this.flagOnCall = true
       this.ringtone.pause()
+      this.buzzer.pause()
       this.$router.push('/setting');
     },
     emergencyCall:function() {

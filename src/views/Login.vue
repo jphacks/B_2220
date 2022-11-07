@@ -22,7 +22,6 @@
               v-model="password"
               label="パスワード"
               type="password">
-
           </v-text-field>
 
           <v-btn
@@ -123,8 +122,7 @@ export default {
             }
 
             sessionStorage.setItem('user', JSON.stringify(auth))
-
-            this.$router.push('/Roomlist')
+            this.$router.push('/home')
           })
           .catch((error) => {
             console.log("fail", error)
