@@ -20,9 +20,8 @@
 
           <v-text-field
               v-model="password"
-              label="Password"
-              type="パスワード">
-
+              label="パスワード"
+              type="password">
           </v-text-field>
 
           <v-btn
@@ -123,7 +122,6 @@ export default {
             }
 
             sessionStorage.setItem('user', JSON.stringify(auth))
-
             this.$router.push('/home')
           })
           .catch((error) => {
@@ -137,14 +135,15 @@ export default {
 
 <style scoped>
 .login-form {
-  margin: 150px;
+  margin: 0px;
   padding: 30px;
 }
 
 .login-box {
-  width: 50%;
-  margin: 0px auto;
-  padding: 30px;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  padding: 50px 30px;
 }
 
 .login-title {

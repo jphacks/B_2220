@@ -28,7 +28,14 @@
               v-model="password"
               label="Password"
               type="パスワード">
+          </v-text-field>
 
+          <v-text-field
+              v-model="phone"
+              :rules="phoneRules"
+              label="緊急連絡先"
+              required
+              type="Emergency Call Number">
           </v-text-field>
 
           
@@ -79,6 +86,10 @@ export default {
       v => /.+@.+\..+/.test(v) || 'メールアドレスが不正です',
     ],
     password: '',
+    phone: '',
+    phoneRules: [
+      v => !!v || '半角・ハイフン無しで入力してください',
+    ],
     errorMessage: ""
   }),
   computed: {
