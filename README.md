@@ -9,6 +9,9 @@
 ### 　　　↓↓↓↓↓
 https://b-2220.onrender.com
 
+![あんしん夜道(short)](https://user-images.githubusercontent.com/24710953/197318711-27ec4021-92cd-48f9-906c-990f1a873a30.gif)
+
+
 ### Browsers support
 
 |[<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://gotbahn.github.io/browsers-support-badges/)</br>Android Chrome |[<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://gotbahn.github.io/browsers-support-badges/)</br>Chrome |[<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://gotbahn.github.io/browsers-support-badges/)</br>ios Chrome　| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://gotbahn.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_48x48.png" alt="iOS Safari" width="24px" height="24px" />](http://gotbahn.github.io/browsers-support-badges/)</br>iOS Safari |
@@ -69,6 +72,8 @@ https://b-2220.onrender.com
 * 夜道に対する恐怖や不安を感じる人どうしのコミュニケーションツールとして発展
 * AIによるより精密な判定により、本当に危険が及んだときに正確な場所・状況の通報
 ### ● 注力したこと（こだわり等）
+* 計64名の女性へのヒアリング
+  * ユーザーのニーズに沿ったプロダクト開発
 * 音声認識機能の実装
   * AIに応答しない場合の識別が自動でできる 
 * 緊急連絡機能の実装
@@ -91,8 +96,9 @@ https://b-2220.onrender.com
 
 ### ● 独自技術
 #### ハッカソンで開発した独自機能・技術
-* 独自で開発したものの内容をこちらに記載してください
-* 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
+* フェイク電話機能
+* 音声認識機能によるAIへの応答有無の判断
+* 応答がない場合、アプリ使用者の位置情報付きの緊急連絡（電話・SMS）の送信
 
 # 使い方
 <サーバーサイド>

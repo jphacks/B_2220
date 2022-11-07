@@ -14,15 +14,14 @@
           <v-text-field
               v-model="email"
               :rules="emailRules"
-              label="E-mail"
+              label="メールアドレス"
               required
           ></v-text-field>
 
           <v-text-field
               v-model="password"
-              label="Password"
+              label="パスワード"
               type="password">
-
           </v-text-field>
 
           <v-btn
@@ -123,8 +122,7 @@ export default {
             }
 
             sessionStorage.setItem('user', JSON.stringify(auth))
-
-            this.$router.push('/')
+            this.$router.push('/home')
           })
           .catch((error) => {
             console.log("fail", error)
@@ -137,14 +135,15 @@ export default {
 
 <style scoped>
 .login-form {
-  margin: 150px;
+  margin: 0px;
   padding: 30px;
 }
 
 .login-box {
-  width: 50%;
-  margin: 0px auto;
-  padding: 30px;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  padding: 50px 30px;
 }
 
 .login-title {
