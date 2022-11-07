@@ -13,21 +13,30 @@
           <v-text-field
               v-model="name"
               :rules="nameRules"
-              label="UserName"
+              label="名前"
               required
           ></v-text-field>
 
           <v-text-field
               v-model="email"
               :rules="emailRules"
-              label="E-mail"
+              label="メールアドレス"
               required
           ></v-text-field>
 
           <v-text-field
               v-model="password"
               label="Password"
-              type="password">
+              type="パスワード">
+
+          </v-text-field>
+
+          <v-text-field
+              v-model="phone"
+              :rules="phoneRules"
+              label="緊急連絡先"
+              required
+              type="Emergency Call Number">
 
           </v-text-field>
 
@@ -77,6 +86,10 @@ export default {
       v => /.+@.+\..+/.test(v) || 'メールアドレスが不正です',
     ],
     password: '',
+    phone: '',
+    phoneRules: [
+      v => !!v || '半角・ハイフン無しで入力してください',
+    ],
     errorMessage: ""
   }),
   computed: {
@@ -124,14 +137,15 @@ export default {
 
 <style scoped>
 .login-form {
-  margin: 150px;
+  margin: 0px;
   padding: 30px;
 }
 
 .login-box {
-  width: 50%;
-  margin: 0px auto;
-  padding: 30px;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  padding: 50px 30px;
 }
 
 .login-title {
