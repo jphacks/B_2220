@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
+import Home from '../views/Home.vue'
 // import UserList from '../views/UserList.vue'
 import RoomList from '../views/RoomList.vue'
 import ChatBoard from '../views/ChatBoard.vue'
 import Login from '../views/Login.vue'
 import SingUp from '../views/SignUp.vue'
 import Call from '../views/Call.vue'
+import Buzzer from '../views/Buzzer.vue'
 import First from '../views/First.vue'
-// import firebase from "@/firebase/firebase"
+import firebase from "@/firebase/firebase"
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
         component: ChatBoard
     },
     {
+        path: '/home',
+        name: 'Home',
+        component: Home
+    },
+    {
         path: '/login',
         name: 'Login',
         component: Login
@@ -46,6 +52,16 @@ const routes = [
         path: '/call',
         name: 'Call',
         component: Call
+    },
+    {
+        path: '/roomlist',
+        name: 'RoomList',
+        component: RoomList
+    },
+    {
+        path: '/buzzer',
+        name: 'Buzzer',
+        component: Buzzer
     },
     {
         path: '/',
@@ -79,37 +95,37 @@ audio4.play();
 const audio5 = new Audio('call05.wav');
 audio5.play();
 
-// router.beforeEach((to, from, next) => {
-//     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-//     if (requiresAuth) {
-//         const user = sessionStorage.getItem('user')
-//         console.log(JSON.parse(user))
-//         if (!user) {
-//             next({
-//                 path: '/login',
-//                 query: {redirect: to.fullPath}
-//             })
-//         } else {
-//             next()
-//         }
-//
-//         // firebase.auth().onAuthStateChanged((user) => {
-//         //     if (!user) {
-//         //         next({
-//         //             path: '/login',
-//         //             query: {redirect: to.fullPath}
-//         //         })
-//         //     } else {
-//         //         next()
-//         //     }
-//         //
-//         // })
-//
-//
-//     } else {
-//         next() // next() を常に呼び出すようにしてください!
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+    if (requiresAuth) {
+        const user = sessionStorage.getItem('user')
+        console.log(JSON.parse(user))
+        if (!user) {
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath}
+            })
+        } else {
+            next()
+        }
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                next({
+                    path: '/login',
+                    query: {redirect: to.fullPath}
+                })
+            } else {
+                next()
+            }
+        
+        })
+
+
+    } else {
+        next() // next() を常に呼び出すようにしてください!
+    }
+})
 
 
 export default router

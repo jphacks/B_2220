@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-container class="bg-image">
+
       <div class="d-flex justify-space-around mb-16 mt-16">
         <h1 class="white--text">たくと</h1>
         <v-avatar
@@ -15,7 +16,8 @@
           </v-icon>
         </v-avatar>
       </div>
-      <div class="d-flex justify-space-around mb-6 pt-16">
+
+      <div class="d-flex justify-space-around pt-10">
         <div>
           <v-btn
               elevation="0"
@@ -24,12 +26,13 @@
               fab
               outlined
               x-large
+              @click="buzzerStart"
           >
             <v-icon color="white">
               mdi-bell-ring
             </v-icon>
           </v-btn>
-          <p class="white--text font-weight-bold mt-2">リマインド</p>
+          <p class="white--text font-weight-bold mt-2">防犯ブザー</p>
         </div>
         <div>
           <v-btn
@@ -47,7 +50,7 @@
           </v-btn>
           <p class="white--text font-weight-bold mt-2">緊急通報</p>
         </div>
-        <div>
+        <div class="app">
           <v-btn
               elevation="0"
               class="mx-2"
@@ -63,7 +66,46 @@
           <p class="white--text font-weight-bold mt-2">メッセージ</p>
         </div>
       </div>
-      <div class="d-flex justify-space-around mb-6">
+        
+      <div class="d-flex justify-space-around mb-10 pt-3">
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              outlined
+              x-large
+              v-if="status=='ready'"
+              @click="startRecording"
+          >
+            <v-icon color="white">
+              mdi-message-text
+            </v-icon>
+          </v-btn>
+          <p class="white--text font-weight-bold mt-2">録音開始</p>
+        </div>
+
+        <div>
+          <v-btn
+              elevation="0"
+              class="mx-2"
+              color="white"
+              fab
+              outlined
+              x-large
+              v-if="status=='recording'"
+              @click = "stopRecording"
+          >
+            <v-icon color="white">
+              mdi-bell-ring
+            </v-icon>
+          </v-btn>
+          <p class="white--text font-weight-bold mt-2">録音停止</p>
+        </div>
+      </div>
+      
+      <div class="d-flex justify-space-around mb-5">
         <div>
           <v-btn
               class="mx-2"
@@ -114,6 +156,7 @@ export default {
   data: () => ({
     flagOnCall: true,
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
+    buzzer: new Audio(require('@/assets/buzzer/buzzer.mp3')),
     name: sessionStorage.getItem('name'),
     // voice: new Audio(require('@/assets/voice/voice1.wav')),
     audio: new Audio(require('@/assets/voice/call01.mp3')),
@@ -123,6 +166,11 @@ export default {
     audio4: new Audio(require('@/assets/voice/call04.wav')),
     audio5: new Audio(require('@/assets/voice/call05.wav')),
     message: '',
+    // -----以下は、録音機能のための変数-----
+    status: 'init',     // 状況
+    recorder: null,     // 音声にアクセスする "MediaRecorder" のインスタンス
+    audioData: [],      // 入力された音声データ
+    audioExtension: ''  // 音声ファイルの拡張子
   }),
   mounted() {
     const {Client} = require("@googlemaps/google-maps-services-js");
@@ -146,8 +194,36 @@ export default {
         });
     setTimeout(this.ringTone, 3000)
     // this.emergencyCall();
+
+    // -----マイクにアクセスここから-----
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+        this.recorder = new MediaRecorder(stream);
+        this.recorder.addEventListener('dataavailable', e => {
+            this.audioData.push(e.data);
+            this.audioExtension = this.getExtension(e.data.type);
+        });
+        this.recorder.addEventListener('stop', () => {
+            const audioBlob = new Blob(this.audioData);
+            const url = URL.createObjectURL(audioBlob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = Math.floor(Date.now() / 1000) + this.audioExtension;
+            document.body.appendChild(a);
+            a.click();
+        });
+        this.status = 'ready';
+    });
+    // -----マイクにアクセスここまで-----
   },
   methods: {
+    buzzerStart(){
+      this.buzzer.currentTime = 0 // 連続で鳴らせるように
+      this.buzzer.play()
+    },
+    buzzerStop(){
+      this.buzzer.pause()
+    },
     ringTone:function() {
       this.ringtone.currentTime = 0 // 連続で鳴らせるように
       this.ringtone.play()
@@ -160,6 +236,7 @@ export default {
     offCall:function() {
       this.flagOnCall = true
       this.ringtone.pause()
+      this.buzzer.pause()
       this.$router.push('/setting');
     },
     emergencyCall:function() {
@@ -214,7 +291,7 @@ export default {
             console.log(error);
           });
     },
-    // マイクの使用設定
+    // -----SpeechRecognitionの設定ここから-----
     useMicrophone:function(){
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
@@ -242,6 +319,9 @@ export default {
       };
       recognition.start();
     },
+    // -----SpeechRecognitionの設定ここまで-----
+
+    // -----AI音声設定ここから-----
     recognizeVoice:function(){
        this.startAiVoice()
       setTimeout(this.useMicrophone, 10000)
@@ -269,7 +349,37 @@ export default {
       } else {
         this.audio5.play()
       }
-    }
+    },
+    // -----AI音声設定ここまで-----
+
+    // -----録音を開始／ストップする部分ここから-----
+    startRecording() {
+      this.status = 'recording';
+      this.audioData = [];
+      this.recorder.start();
+    },
+    stopRecording() {
+      this.recorder.stop();
+      this.status = 'ready';
+    },
+    // -----マイクの使用設定ここまで-----
+
+    // -----音声ファイルの拡張子を取得するここから-----
+    getExtension(audioType) {
+
+      let extension = 'wav';
+      const matches = audioType.match(/audio\/([^;]+)/);
+
+      if(matches) {
+
+          extension = matches[1];
+
+      }
+
+      return '.'+ extension;
+
+      }
+    // -----音声ファイルの拡張子を取得するここから-----
   }
 }
 </script>
