@@ -108,6 +108,8 @@
 
 <script>
 import axios from 'axios';
+import firebase from "firebase/app";
+import "firebase/firestore";
 // import Vue from 'vue';
 export default {
   name: "call",
@@ -119,12 +121,19 @@ export default {
     audio: new Audio(require('@/assets/voice/call01.mp3')),
     audio2: new Audio(require('@/assets/voice/call02.wav')),
     audio3: new Audio(require('@/assets/voice/call03.wav')),
-    userLocation: null,
+    userAddress: null,
     audio4: new Audio(require('@/assets/voice/call04.wav')),
     audio5: new Audio(require('@/assets/voice/call05.wav')),
     message: '',
+    userLocationArray: [],
+    date: null,
   }),
   mounted() {
+    this.date = new Date();
+    this.date = this.date.toLocaleString().split('/').join('-');
+    this.date = this.date.split(' ').join('-');
+    this.date = this.date.split(':').join('-');
+    console.log(this.date);
     const {Client} = require("@googlemaps/google-maps-services-js");
     const client = new Client({});
     client
@@ -139,11 +148,12 @@ export default {
           timeout: 1000, // milliseconds
         })
         .then((r) => {
-          console.log(this.userLocation = r.data.results[0].formatted_address);
+          console.log(this.userAddress = r.data.results[0].formatted_address);
         })
         .catch((e) => {
           console.log(e.response.data.error_message);
         });
+    this.emergencyCall();
     setTimeout(this.ringTone, 3000)
     // this.emergencyCall();
   },
@@ -167,7 +177,19 @@ export default {
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
       const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
       const phoneNumberTo = '+81' + sessionStorage.getItem('phoneNumber').slice(1);
-      const googleMapUrl = sessionStorage.getItem('googleMapUrl');
+
+
+      const db = firebase.firestore();
+      db.collection("users").doc("user_1").collection("latlng").doc(this.date).set({
+        locationArray: [
+          sessionStorage.getItem('longitude') + ',' + sessionStorage.getItem('latitude')
+        ],
+      }).then(() => {
+        console.log("Document successfully written!");
+      }).catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+      setInterval(this.getLocation,20000);
 
       var qs = require('qs');
       var callData = qs.stringify({
@@ -193,7 +215,7 @@ export default {
           });
 
       var SMSData = qs.stringify({
-        'Body': this.name + 'さんの応答が途絶えました。' + googleMapUrl,
+        'Body': this.name + 'さんの応答が途絶えました。' + 'http://localhost:8080/map?uid=' + 'user_1' + '&date=' + this.date,
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
@@ -213,6 +235,28 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
+
+    },
+    getLocation(){
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position){
+              let coords = position.coords;
+              // 緯度経度だけ取得
+              let latitude = coords.latitude;
+              let longitude = coords.longitude;
+              const db = firebase.firestore();
+              db.collection('users').doc('user_1').collection('latlng').doc(this.date).update({
+                locationArray: firebase.firestore.FieldValue.arrayUnion( longitude + ',' + latitude)
+              });
+            }.bind(this),
+            function(error) {
+              console.error(error);
+            }
+        );
+      } else {
+        console.error("Geolocation APIに対応していません");
+      }
     },
     // マイクの使用設定
     useMicrophone:function(){

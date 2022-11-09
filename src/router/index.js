@@ -8,6 +8,7 @@ import Login from '../views/Login.vue'
 import SingUp from '../views/SignUp.vue'
 import Call from '../views/Call.vue'
 import First from '../views/First.vue'
+import Map from '../views/Map.vue'
 // import firebase from "@/firebase/firebase"
 
 Vue.use(VueRouter)
@@ -51,8 +52,12 @@ const routes = [
         path: '/',
         name: 'First',
         component: First
-    }
-
+    },
+    {
+        path: '/map',
+        name: 'Map',
+        component: Map
+    },
 ]
 
 const router = new VueRouter({
