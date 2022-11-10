@@ -19,7 +19,7 @@ const routes = [
         path: '/setting',
         name: 'RoomList',
         component: RoomList,
-        // meta: {requiresAuth: false}
+        meta: { requiresAuth: true },
     },
     {
         path: '/about',
@@ -52,17 +52,20 @@ const routes = [
     {
         path: '/call',
         name: 'Call',
-        component: Call
+        component: Call,
+        meta: { requiresAuth: true },
     },
     {
         path: '/roomlist',
         name: 'RoomList',
-        component: RoomList
+        component: RoomList,
+        meta: { requiresAuth: true },
     },
     {
         path: '/buzzer',
         name: 'Buzzer',
-        component: Buzzer
+        component: Buzzer,
+        meta: { requiresAuth: true },
     },
     {
         path: '/',
