@@ -180,10 +180,9 @@ export default {
   }),
   mounted() {
     this.date = new Date();
-    this.date = this.date.toLocaleString().split('/').join('-');
-    this.date = this.date.split(' ').join('-');
-    this.date = this.date.split(':').join('-');
-    this.firebaseUid = firebase.auth().currentUser.uid
+    this.date = this.date.toLocaleString().split('/').join('-').split(' ').join('-').split(':').join('-');
+    this.firebaseUid = JSON.parse(sessionStorage.getItem('user')).uid;
+
     const {Client} = require("@googlemaps/google-maps-services-js");
     const client = new Client({});
     client
@@ -267,6 +266,7 @@ export default {
       }).catch((error) => {
         console.error("Error writing document: ", error);
       });
+      this.getLocation();
       setInterval(this.getLocation,20000);
 
       var qs = require('qs');
@@ -293,7 +293,7 @@ export default {
           });
 
       var SMSData = qs.stringify({
-        'Body': this.name + 'さんの応答が途絶えました。' + 'http://localhost:8080/map?uid=' + this.firebaseUid + '&date=' + this.date,
+        'Body': this.name + 'さんの応答が途絶えました。' + location.protocol + '//' + location.host + '/map?uid=' + this.firebaseUid + '&date=' + this.date,
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
