@@ -35,8 +35,9 @@
               :rules="phoneRules"
               label="緊急連絡先"
               required
-              type="Emergency Call Number">
+              >
           </v-text-field>
+          <p>{{ this.phoneNumber }}</p>
 
           
 
@@ -115,11 +116,23 @@ export default {
             console.log("success", result)
             await result.user.updateProfile({
               displayName: this.name,
-              phoneNumber: this.phoneNumber,
             });
             console.log("update user", result.user)
 
             localStorage.message = "新規作成に成功しました"
+
+            // 電話番号の追加
+            const db = firebase.firestore();
+            const userRef = db.collection("users").doc(result.user.uid);
+            userRef.set({
+              phoneNumber: this.phoneNumber
+            })
+            .then(() => {
+              console.log("phoneNumber successfully written!");
+            })
+            .catch((error) => {
+              console.error("phoneNumber writing document: ", error);
+            });
 
             this.$router.push('/login')
 
