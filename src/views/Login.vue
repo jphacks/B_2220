@@ -122,7 +122,7 @@ export default {
             photoURL: result.user.photoURL
           }
 
-          this.auth.phoneNumber = await this.getPhoneNumber();
+          this.auth.phoneNumber = await this.getPhoneNumber()
           sessionStorage.setItem('user', JSON.stringify(this.auth))
           console.log("sessionStorage", JSON.parse(sessionStorage.getItem('user')))
           this.$router.push('/home')
@@ -138,7 +138,8 @@ export default {
       // 電話番号の取得
       const db = firebase.firestore();
       const userRef = db.collection("users").doc(this.auth.uid);
-      userRef.get().then((doc) => {
+      try {
+        const doc = await userRef.get()
         if (doc.exists) {
           console.log("Document data:", doc.data());
           const phoneNumber = doc.data().phoneNumber;
@@ -150,9 +151,10 @@ export default {
           // doc.data() will be undefined in this case
           console.log("電話番号がせていされていません");
         }
-      }).catch((error) => {
+      }
+      catch(error) {
         console.log("Error getting document:", error);
-      });
+      }
     }
   },
 }
