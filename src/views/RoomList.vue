@@ -20,9 +20,7 @@
     </v-toolbar>
 
     <v-main>
-    <v-form
-      ref="form"
-      v-model="form"
+    <v-sheet
       class="pa-4 pt-6"
     >
     <v-col>
@@ -100,7 +98,7 @@
           </div>
       </div>
     </v-col>
-    </v-form>
+    </v-sheet>
     </v-main>
   </v-card>
   </v-app>
@@ -118,6 +116,7 @@ export default {
     CreateRoom
   },*/
   data: () => ({
+    user: null,
     rooms: [],
     name: '',
     phoneNumber: '',
@@ -127,8 +126,11 @@ export default {
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3'))
   }),
   mounted() {
-
-    this.getRooms()
+    // キャッシュからユーザー情報を取得
+    this.user = JSON.parse(sessionStorage.getItem('user'))
+    this.name = this.user.displayName
+    this.phoneNumber = this.user.phoneNumber
+    console.log("user ", this.user.name, this.user.phoneNumber);
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -148,6 +150,10 @@ export default {
 
   },
   watch: {
+    name(newValue) {
+      console.log("name changed", newValue);
+      // this.name = this.user.name
+    },
     latitude: {
       handler: function (val) {
         this.mapRequestUrl = 'https://maps.google.co.jp/maps?output=embed&q=' + val + ',' + this.longitude + '&t=m&z=20'
@@ -202,9 +208,11 @@ export default {
           console.error("Geolocation APIに対応していません");
       }
     },
-    saveData: function() { // sessionStorageへ保存する
-      sessionStorage.setItem('name', this.name); 
-      sessionStorage.setItem('phoneNumber', this.phoneNumber); 
+    // sessionStorageへ保存する
+    saveData: function() {
+      // オブジェクトに保存しているので、'name' 'phoneNumber' は使わない。
+      // sessionStorage.setItem('name', this.name);
+      // sessionStorage.setItem('phoneNumber', this.phoneNumber);
       sessionStorage.setItem('googleMapUrl', 'https://www.google.com/maps/search/' + this.latitude + ',' + this.longitude);
       sessionStorage.setItem('latitude',this.latitude);
       sessionStorage.setItem('longitude',this.longitude);
