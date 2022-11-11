@@ -9,6 +9,7 @@ import SingUp from '../views/SignUp.vue'
 import Call from '../views/Call.vue'
 import Buzzer from '../views/Buzzer.vue'
 import First from '../views/First.vue'
+import Map from '../views/Map.vue'
 import firebase from "@/firebase/firebase"
 
 Vue.use(VueRouter)
@@ -18,7 +19,7 @@ const routes = [
         path: '/setting',
         name: 'RoomList',
         component: RoomList,
-        // meta: {requiresAuth: false}
+        meta: { requiresAuth: true },
     },
     {
         path: '/about',
@@ -51,24 +52,31 @@ const routes = [
     {
         path: '/call',
         name: 'Call',
-        component: Call
+        component: Call,
+        meta: { requiresAuth: true },
     },
     {
         path: '/roomlist',
         name: 'RoomList',
-        component: RoomList
+        component: RoomList,
+        meta: { requiresAuth: true },
     },
     {
         path: '/buzzer',
         name: 'Buzzer',
-        component: Buzzer
+        component: Buzzer,
+        meta: { requiresAuth: true },
     },
     {
         path: '/',
         name: 'First',
         component: First
-    }
-
+    },
+    {
+        path: '/map',
+        name: 'Map',
+        component: Map
+    },
 ]
 
 const router = new VueRouter({
