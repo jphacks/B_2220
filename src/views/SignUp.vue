@@ -13,7 +13,7 @@
           <v-text-field
               v-model="name"
               :rules="nameRules"
-              label="名前"
+              label="氏名（漢字）"
               required
           ></v-text-field>
 
@@ -26,12 +26,12 @@
 
           <v-text-field
               v-model="password"
-              label="Password"
-              type="パスワード">
-          </v-text-field>
+              label="パスワード"
+              type="Password"
+          ></v-text-field>
 
           <v-text-field
-              v-model="phone"
+              v-model="phoneNumber"
               :rules="phoneRules"
               label="緊急連絡先"
               required
@@ -86,7 +86,7 @@ export default {
       v => /.+@.+\..+/.test(v) || 'メールアドレスが不正です',
     ],
     password: '',
-    phone: '',
+    phoneNumber: '',
     phoneRules: [
       v => !!v || '半角・ハイフン無しで入力してください',
     ],
@@ -113,9 +113,10 @@ export default {
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(async (result) => {
             console.log("success", result)
-            await result.user.updateProfile(
-                {displayName: this.name}
-            );
+            await result.user.updateProfile({
+              displayName: this.name,
+              phoneNumber: this.phoneNumber,
+            });
             console.log("update user", result.user)
 
             localStorage.message = "新規作成に成功しました"
