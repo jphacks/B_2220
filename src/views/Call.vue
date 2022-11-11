@@ -156,10 +156,12 @@ import "firebase/firestore";
 export default {
   name: "call",
   data: () => ({
+    // firebaseに保存されているuser情報
+    user: null,
     flagOnCall: true,
     ringtone: new Audio(require('@/assets/ringtone/ringtone2.mp3')),
     buzzer: new Audio(require('@/assets/buzzer/buzzer.mp3')),
-    name: sessionStorage.getItem('name'),
+    name: '',
     // voice: new Audio(require('@/assets/voice/voice1.wav')),
     audio: new Audio(require('@/assets/voice/call01.mp3')),
     audio2: new Audio(require('@/assets/voice/call02.wav')),
@@ -179,9 +181,14 @@ export default {
     audioExtension: ''  // 音声ファイルの拡張子
   }),
   mounted() {
+    // 日付を取得してfirebaseのドキュメント名にする
     this.date = new Date();
     this.date = this.date.toLocaleString().split('/').join('-').split(' ').join('-').split(':').join('-');
-    this.firebaseUid = JSON.parse(sessionStorage.getItem('user')).uid;
+
+    // firebaseのユーザ情報をキャッシュから取得
+    this.user = JSON.parse(sessionStorage.getItem('user'));
+    this.firebaseUid = this.user.uid;
+    this.name = this.user.name;
 
     const {Client} = require("@googlemaps/google-maps-services-js");
     const client = new Client({});
@@ -253,7 +260,7 @@ export default {
       const accountSid = process.env.VUE_APP_ACCOUNT_SID;
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
       const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
-      const phoneNumberTo = '+81' + sessionStorage.getItem('phoneNumber').slice(1);
+      const phoneNumberTo = '+81' + this.user.phoneNumber.slice(1);
 
 
       const db = firebase.firestore();
