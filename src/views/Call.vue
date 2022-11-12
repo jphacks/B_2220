@@ -278,6 +278,28 @@ export default {
 
       var qs = require('qs');
 
+      var callData = qs.stringify({
+        'Twiml': '<Response><Say voice="alice" language="ja-JP" loop="2">' + this.name + 'さんの応答が途絶えました。ショートメッセージから位置情報を確認して下さい。</Say></Response>',
+        'To': phoneNumberTo,
+        'From': phoneNumberFrom
+      });
+      var callConfig = {
+        method: 'post',
+        url: 'https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Calls.json',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : callData
+      };
+      axios(callConfig)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      
       var SMSData = qs.stringify({
         'Body': this.name + 'さんの応答が途絶えました。' + location.protocol + '//' + location.host + '/map?uid=' + this.firebaseUid + '&date=' + this.date + ' ※ルートが表示されない場合は以下URLを開いて下さい ' + googleMapUrl,
         'To': phoneNumberTo,
