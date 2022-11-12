@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     goSetting(){
-      this.$router.push('/signup');
+      this.$router.push('/setting');
     }
   }
 }
