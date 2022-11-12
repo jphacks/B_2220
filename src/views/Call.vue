@@ -261,7 +261,7 @@ export default {
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
       const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
       const phoneNumberTo = '+81' + this.user.phoneNumber.slice(1);
-      const googleMapUrl = sessionStorage.getItem('googleMapUrl');
+      // const googleMapUrl = sessionStorage.getItem('googleMapUrl');
 
       const db = firebase.firestore();
       db.collection("users").doc(this.firebaseUid).collection("latlng").doc(this.date).set({
@@ -274,7 +274,7 @@ export default {
         console.error("Error writing document: ", error);
       });
       this.getLocation();
-      setInterval(this.getLocation,20000);
+      setInterval(this.getLocation,5000);
 
       var qs = require('qs');
 
@@ -301,7 +301,7 @@ export default {
           });
       
       var SMSData = qs.stringify({
-        'Body': this.name + 'さんの応答が途絶えました。' + location.protocol + '//' + location.host + '/map?uid=' + this.firebaseUid + '&date=' + this.date + ' ※ルートが表示されない場合は以下URLを開いて下さい ' + googleMapUrl,
+        'Body': this.name + 'さんの応答が途絶えました。' + location.protocol + '//' + location.host + '/map?uid=' + this.firebaseUid + '&date=' + this.date,
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
