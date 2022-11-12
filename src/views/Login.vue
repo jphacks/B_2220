@@ -123,8 +123,8 @@ export default {
           }
 
           this.auth.phoneNumber = await this.getPhoneNumber()
-          sessionStorage.setItem('user', JSON.stringify(this.auth))
-          console.log("sessionStorage", JSON.parse(sessionStorage.getItem('user')))
+          localStorage.setItem('user', JSON.stringify(this.auth))
+          console.log("localStorage", JSON.parse(localStorage.getItem('user')))
           this.$router.push('/setting')
         }
         catch (error) {
