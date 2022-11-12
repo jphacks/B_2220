@@ -346,7 +346,7 @@ export default {
     },
     // -----SpeechRecognitionの設定ここから-----
     useMicrophone:function(){
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      const SpeechRecognition = window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
       const makeEmergencyCall = this.emergencyCall;
       this.message = '音声認識中'
