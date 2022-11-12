@@ -56,12 +56,6 @@ const routes = [
         meta: { requiresAuth: true },
     },
     {
-        path: '/roomlist',
-        name: 'RoomList',
-        component: RoomList,
-        meta: { requiresAuth: true },
-    },
-    {
         path: '/buzzer',
         name: 'Buzzer',
         component: Buzzer,
@@ -111,7 +105,7 @@ router.beforeEach((to, from, next) => {
         if (!user) {
             next({
                 path: '/login',
-                query: {redirect: to.fullPath}
+                query: { redirect: to.fullPath }
             })
         } else {
             next()
@@ -121,12 +115,12 @@ router.beforeEach((to, from, next) => {
             if (!user) {
                 next({
                     path: '/login',
-                    query: {redirect: to.fullPath}
+                    query: { redirect: to.fullPath }
                 })
             } else {
                 next()
             }
-        
+
         })
 
 
