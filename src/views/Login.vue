@@ -68,6 +68,7 @@ import firebase from "@/firebase/firebase"
 
 export default {
   data: () => ({
+    auth: null,
     valid: true,
     name: '',
     nameRules: [
@@ -107,27 +108,53 @@ export default {
     },
     submit() {
       console.log("submit call")
-      firebase.auth()
-          .signInWithEmailAndPassword(this.email, this.password)
-          .then((result) => {
-            console.log("success")
-            console.log("user", result.user)
+      const authUser = async() => {
+        try {
+          const result = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+          console.log("success")
+          console.log("user", result.user)
 
-            const auth = {
-              displayName: result.user.displayName,
-              email: result.user.email,
-              uid: result.user.uid,
-              refreshToken: result.user.refreshToken,
-              photoURL: result.user.photoURL
-            }
+          this.auth = {
+            displayName: result.user.displayName,
+            email: result.user.email,
+            uid: result.user.uid,
+            refreshToken: result.user.refreshToken,
+            photoURL: result.user.photoURL
+          }
 
-            sessionStorage.setItem('user', JSON.stringify(auth))
-            this.$router.push('/home')
-          })
-          .catch((error) => {
-            console.log("fail", error)
-            this.errorMessage = "ログインに失敗しました"
-          })
+          this.auth.phoneNumber = await this.getPhoneNumber()
+          sessionStorage.setItem('user', JSON.stringify(this.auth))
+          console.log("sessionStorage", JSON.parse(sessionStorage.getItem('user')))
+          this.$router.push('/home')
+        }
+        catch (error) {
+          console.log("fail", error)
+          this.errorMessage = "ログインに失敗しました"
+        }
+      }
+      authUser()
+    },
+    async getPhoneNumber() {
+      // 電話番号の取得
+      const db = firebase.firestore();
+      const userRef = db.collection("users").doc(this.auth.uid);
+      try {
+        const doc = await userRef.get()
+        if (doc.exists) {
+          console.log("Document data:", doc.data());
+          const phoneNumber = doc.data().phoneNumber;
+          console.log("電話番号", phoneNumber);
+          // authオブジェクトに電話番号を追加
+          return phoneNumber;
+
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("電話番号がせていされていません");
+        }
+      }
+      catch(error) {
+        console.log("Error getting document:", error);
+      }
     }
   },
 }
