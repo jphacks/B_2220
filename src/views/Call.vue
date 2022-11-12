@@ -156,6 +156,7 @@ import "firebase/firestore";
 export default {
   name: "call",
   data: () => ({
+    // recordedAudioDataUrl: '',
     // firebaseに保存されているuser情報
     user: null,
     flagOnCall: true,
@@ -211,27 +212,6 @@ export default {
         });
     setTimeout(this.ringTone, 3000)
     // this.emergencyCall();
-
-    // -----マイクにアクセスここから-----
-    navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(stream => {
-        this.recorder = new MediaRecorder(stream);
-        this.recorder.addEventListener('dataavailable', e => {
-            this.audioData.push(e.data);
-            this.audioExtension = this.getExtension(e.data.type);
-        });
-        this.recorder.addEventListener('stop', () => {
-            const audioBlob = new Blob(this.audioData);
-            const url = URL.createObjectURL(audioBlob);
-            let a = document.createElement('a');
-            a.href = url;
-            a.download = Math.floor(Date.now() / 1000) + this.audioExtension;
-            document.body.appendChild(a);
-            a.click();
-        });
-        this.status = 'ready';
-    });
-    // -----マイクにアクセスここまで-----
   },
   methods: {
     buzzerStart(){
@@ -321,7 +301,8 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-
+          
+      recordAudio();
     },
     getLocation(){
       if (navigator.geolocation) {
@@ -431,8 +412,39 @@ export default {
 
       return '.'+ extension;
 
-      }
-    // -----音声ファイルの拡張子を取得するここから-----
+      },
+      // -----音声ファイルの拡張子を取得するここから-----
+      async recordAudio(){
+        // -----マイクにアクセスここから-----
+        navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          this.recorder = new MediaRecorder(stream);
+          this.recorder.addEventListener('dataavailable', e => {
+              this.audioData.push(e.data);
+              this.audioExtension = this.getExtension(e.data.type);
+          });
+          this.recorder.addEventListener('stop', async() => {
+              const audioBlob = new Blob(this.audioData);
+              const filepath = `/recordedAudioData/${this.user.uid}/${this.date}.${this.audioExtension}`;
+              await firebase.storage().ref()
+                .child(filepath)
+                .put(audioBlob)
+                .then(async snapshot => {
+                  this.recordedAudioDataUrl = await snapshot.ref.getDownloadURL()
+                  console.log("recordedAudioDataUrl", this.recordedAudioDataUrl);
+                  this.imageUploading = false
+                })
+              const url = URL.createObjectURL(audioBlob);
+              let a = document.createElement('a');
+              a.href = url;
+              a.download = Math.floor(Date.now() / 1000) + this.audioExtension;
+              document.body.appendChild(a);
+              a.click();
+          });
+          this.status = 'ready';
+        });
+    // -----マイクにアクセスここまで-----
+    }
   }
 }
 </script>
