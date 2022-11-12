@@ -33,7 +33,7 @@ export default {
   }),
   methods: {
     makeCall() {
-      this.$router.push('/roomlist');
+      this.$router.push('/setting');
     },
     makeBuzzer(){
       this.$router.push('/buzzer');
