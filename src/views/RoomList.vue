@@ -127,7 +127,7 @@ export default {
   }),
   mounted() {
     // キャッシュからユーザー情報を取得
-    this.user = JSON.parse(sessionStorage.getItem('user'))
+    this.user = JSON.parse(localStorage.getItem('user'))
     this.name = this.user.displayName
     this.phoneNumber = this.user.phoneNumber
     console.log("user ", this.user.name, this.user.phoneNumber);
@@ -217,7 +217,7 @@ export default {
       this.user.name = this.name
       this.user.phoneNumber = this.phoneNumber
 
-      sessionStorage.setItem('user', JSON.stringify(this.user));
+      localStorage.setItem('user', JSON.stringify(this.user));
       sessionStorage.setItem('googleMapUrl', 'https://www.google.com/maps/search/' + this.latitude + ',' + this.longitude);
       sessionStorage.setItem('latitude',this.latitude);
       sessionStorage.setItem('longitude',this.longitude);
