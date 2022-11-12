@@ -186,7 +186,7 @@ export default {
     this.date = this.date.toLocaleString().split('/').join('-').split(' ').join('-').split(':').join('-');
 
     // firebaseのユーザ情報をキャッシュから取得
-    this.user = JSON.parse(sessionStorage.getItem('user'));
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.firebaseUid = this.user.uid;
     this.name = this.user.name;
 

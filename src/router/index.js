@@ -78,7 +78,7 @@ audio5.play();
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
     if (requiresAuth) {
-        const user = sessionStorage.getItem('user')
+        const user = localStorage.getItem('user')
         console.log(JSON.parse(user))
         if (!user) {
             next({
