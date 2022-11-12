@@ -261,7 +261,7 @@ export default {
       const authToken = process.env.VUE_APP_AUTH_TOKEN;
       const phoneNumberFrom = process.env.VUE_APP_PHONE_NUMBER;
       const phoneNumberTo = '+81' + this.user.phoneNumber.slice(1);
-
+      const googleMapUrl = sessionStorage.getItem('googleMapUrl');
 
       const db = firebase.firestore();
       db.collection("users").doc(this.firebaseUid).collection("latlng").doc(this.date).set({
@@ -277,6 +277,7 @@ export default {
       setInterval(this.getLocation,20000);
 
       var qs = require('qs');
+
       var callData = qs.stringify({
         'Twiml': '<Response><Say voice="alice" language="ja-JP" loop="2">' + this.name + 'さんの応答が途絶えました。ショートメッセージから位置情報を確認して下さい。</Say></Response>',
         'To': phoneNumberTo,
@@ -298,9 +299,9 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-
+      
       var SMSData = qs.stringify({
-        'Body': this.name + 'さんの応答が途絶えました。' + location.protocol + '//' + location.host + '/map?uid=' + this.firebaseUid + '&date=' + this.date,
+        'Body': this.name + 'さんの応答が途絶えました。' + location.protocol + '//' + location.host + '/map?uid=' + this.firebaseUid + '&date=' + this.date + ' ※ルートが表示されない場合は以下URLを開いて下さい ' + googleMapUrl,
         'To': phoneNumberTo,
         'From': phoneNumberFrom
       });
@@ -345,7 +346,7 @@ export default {
     },
     // -----SpeechRecognitionの設定ここから-----
     useMicrophone:function(){
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      const SpeechRecognition = window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
       const makeEmergencyCall = this.emergencyCall;
       this.message = '音声認識中'

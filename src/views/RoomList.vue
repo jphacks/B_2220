@@ -213,6 +213,11 @@ export default {
       // オブジェクトに保存しているので、'name' 'phoneNumber' は使わない。
       // sessionStorage.setItem('name', this.name);
       // sessionStorage.setItem('phoneNumber', this.phoneNumber);
+
+      this.user.name = this.name
+      this.user.phoneNumber = this.phoneNumber
+
+      sessionStorage.setItem('user', JSON.stringify(this.user));
       sessionStorage.setItem('googleMapUrl', 'https://www.google.com/maps/search/' + this.latitude + ',' + this.longitude);
       sessionStorage.setItem('latitude',this.latitude);
       sessionStorage.setItem('longitude',this.longitude);
