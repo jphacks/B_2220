@@ -1,13 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-// import UserList from '../views/UserList.vue'
 import RoomList from '../views/RoomList.vue'
-import ChatBoard from '../views/ChatBoard.vue'
 import Login from '../views/Login.vue'
 import SingUp from '../views/SignUp.vue'
 import Call from '../views/Call.vue'
-import Buzzer from '../views/Buzzer.vue'
 import First from '../views/First.vue'
 import Map from '../views/Map.vue'
 import firebase from "@/firebase/firebase"
@@ -20,19 +17,6 @@ const routes = [
         name: 'RoomList',
         component: RoomList,
         meta: { requiresAuth: true },
-    },
-    {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    },
-    {
-        path: '/chat',
-        name: 'ChatBoard',
-        component: ChatBoard
     },
     {
         path: '/home',
@@ -53,12 +37,6 @@ const routes = [
         path: '/call',
         name: 'Call',
         component: Call,
-        meta: { requiresAuth: true },
-    },
-    {
-        path: '/buzzer',
-        name: 'Buzzer',
-        component: Buzzer,
         meta: { requiresAuth: true },
     },
     {
