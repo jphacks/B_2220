@@ -1,20 +1,37 @@
 <template>
   <v-app>
-    <div id='map' style='width: 400px; height: 300px;'></div>
+    <div id='map' style='width: 400px; height: 300px;' v-if="isMapboxWork"></div>
+    <div class="p-map" v-if="!isMapboxWork">
+      <iframe
+          :src="mapRequestUrl"
+          width="30px"
+          height="30px"
+          frameborder="0"
+          style="border:0"
+          allowfullscreen
+      >
+      </iframe>
+    </div>
+    <p v-if="!isExistLatlng">
+      Not Found
+    </p>
   </v-app>
 </template>
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import firebase from "firebase/app";
 import "firebase/firestore";
 
 export default {
   name: "Map",
   data: () => ({
+    isMapboxWork: true,
+    isExistLatlng: true,
     userLocationArray: null,
     userStartPosition: null,
+    mapRequestUrl: null,
   }),
   mounted() {
     const url = new URL(window.location.href);
@@ -26,6 +43,9 @@ export default {
         this.userStartPosition = doc.data().locationArray[0];
         this.userLocationArray = doc.data().locationArray.join(';').slice( 0, -1 );
         this.getMatch();
+      }
+      else{
+        this.isExistLatlng = false;
       }
     })
   },
@@ -77,9 +97,8 @@ export default {
       const response = await query.json();
       // Handle errors
       if (response.code !== 'Ok') {
-        alert(
-            `${response.code} - ${response.message}.\n\nFor more information: https://docs.mapbox.com/api/navigation/map-matching/#map-matching-api-errors`
-        );
+        this.isMapboxWork = false;
+        this.mapRequestUrl = "https://maps.google.co.jp/maps?output=embed&q=" + this.userStartPosition.split(',')[1] + "," + this.userStartPosition.split(',')[0] + "&t=m&z=20"
         return;
       }
       // Get the coordinates from the response
