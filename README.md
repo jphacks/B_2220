@@ -15,8 +15,6 @@ https://b-2220.onrender.com
 
 <br>
 
-![b2220 - Frame 4](https://user-images.githubusercontent.com/24710953/196140549-7691f13e-495f-490d-8506-c3e96b625011.jpg)
-
 ## 使い方(デモ動画)
 [![IMAGE ALT TEXT HERE](https://user-images.githubusercontent.com/24710953/197316618-c7c44cbb-c640-45c1-9958-4582c970fe55.png)](https://youtu.be/qfS-SFLeszY)
 
